@@ -1,6 +1,6 @@
 public abstract class Product{
     private String productCode;
-    private String productDescription;
+    private String productName;
     private int inventoryCount;
     private double pricePerUnit;
 
@@ -9,8 +9,8 @@ public abstract class Product{
         this.productCode=code;
     }
 
-    void setProductDescription(String desc){
-        this.productDescription=desc;
+    void setProductName(String Name){
+        this.productName=desc;
     }
 
     void setInventoryCount(int quantity){
@@ -26,8 +26,8 @@ public abstract class Product{
         return this.productCode;
     }
 
-    String getProductDescription(){
-        return this.productDescription;
+    String getProductName(){
+        return this.productName;
     }
 
     int getInventoryCount(){
