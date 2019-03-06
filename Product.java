@@ -9,7 +9,7 @@ public abstract class Product{
         this.productCode=code;
     }
 
-    void setProductName(String Name){
+    void setProductName(String desc){
         this.productName=desc;
     }
 

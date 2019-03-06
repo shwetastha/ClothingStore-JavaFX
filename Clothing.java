@@ -1,4 +1,4 @@
-public class Clothing extends Products{
+public class Clothing extends Product{
     private String size;
     private String color;
     private String typeOfApparel;
@@ -31,15 +31,15 @@ public class Clothing extends Products{
     }
 
     //accessors
-    String getSize(String size){
+    String getSize(){
         return this.size;
     }
 
-    String getColor(String color){
+    String getColor(){
         return this.color;
     }
 
-    String getTypeOfApparel(String typeOfApparel){
-        this.typeOfApparel=typeOfApparel;
+    String getTypeOfApparel(){
+        return this.typeOfApparel;
     }
 }
