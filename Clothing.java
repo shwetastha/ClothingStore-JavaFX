@@ -1,20 +1,17 @@
 public class Clothing extends Product{
     private String size;
     private String color;
-    private String typeOfApparel;
     private String category;
 
     Clothing(){
         this.category="Clothing";
         this.size="";
         this.color="";
-        this.typeOfApparel="";
     }
 
-    Clothing(String size, String color, String typeOfApparel){
+    Clothing(String size, String color){
         this.size=size;
         this.color=color;
-        this.typeOfApparel=typeOfApparel;
         this.category="Clothing";
     }
     //mutators
@@ -26,10 +23,7 @@ public class Clothing extends Product{
         this.color=color;
     }
 
-    void setTypeOfApparel(String typeOfApparel){
-        this.typeOfApparel=typeOfApparel;
-    }
-
+    
     //accessors
     String getSize(){
         return this.size;
@@ -39,7 +33,5 @@ public class Clothing extends Product{
         return this.color;
     }
 
-    String getTypeOfApparel(){
-        return this.typeOfApparel;
-    }
+    
 }

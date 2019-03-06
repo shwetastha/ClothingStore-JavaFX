@@ -1,23 +1,23 @@
 public class Accessories extends Product{
     private String type;//sunglasses, earrings, anklets
-    private int countOfUnit; //a pair of earrings, 1 sunglasses, 1 anklet
+    private String category;
 
     Accessories(){
         this.type="";
-        this.countOfUnit=0;
+        this.category="Accesories";
     }
     
-    Accessories(String type, int count){
+    Accessories(String type){
         this.type=type;
-        this.countOfUnit=count;
+        this.category="Accesories";
     }
     
     void setType(String type){
         this.type=type;
     }
 
-    void setCountOfUnit(int countOfUnit){
-        this.countOfUnit=countOfUnit;
+    String getType(){
+        return this.type;
     }
 
     
