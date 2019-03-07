@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
   <columnConstraints>
       <ColumnConstraints maxWidth="195.0" minWidth="0.0" prefWidth="0.0" />
       <ColumnConstraints maxWidth="230" minWidth="10.0" prefWidth="210.0" />
@@ -45,20 +45,20 @@
       <Button fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="3" />
       <HBox fx:id="hboxCategory" alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="63.0" text="Category" />
-            <ComboBox fx:id="comboboxCategory" prefHeight="25.0" prefWidth="130.0" />
+            <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="68.0" text="Category" />
+            <ComboBox fx:id="comboboxCategory" prefHeight="25.0" prefWidth="141.0" />
          </children>
       </HBox>
       <HBox fx:id="hboxName" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="234.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
-            <Label fx:id="labelProductName" prefHeight="17.0" prefWidth="50.0" text="Name" />
-            <TextField fx:id="textViewProductName" prefHeight="25.0" prefWidth="174.0" />
+            <Label fx:id="labelProductName" prefHeight="17.0" prefWidth="54.0" text="Name" />
+            <TextField fx:id="textViewProductName" prefHeight="25.0" prefWidth="166.0" />
          </children>
       </HBox>
       <HBox fx:id="hboxPrice" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <Label fx:id="labelPrice" prefHeight="17.0" prefWidth="64.0" text="Price" />
-            <Spinner fx:id="spinnerPrice" prefHeight="25.0" prefWidth="125.0" />
+            <Label fx:id="labelPrice" prefHeight="17.0" prefWidth="72.0" text="Price" />
+            <TextField fx:id="textFieldPrice" />
          </children>
       </HBox>
       <HBox fx:id="hboxQuantity" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
@@ -79,7 +79,7 @@
          <children>
             <Label fx:id="labelSize" text="Size" />
             <Label fx:id="labelColor" text="Color" GridPane.rowIndex="1" />
-            <TextField prefHeight="25.0" prefWidth="131.0" GridPane.columnIndex="1" />
+            <TextField prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" />
             <TextField prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>

@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -13,8 +14,10 @@ public class Home extends Application {
     
         Scene scene = new Scene(root, 600, 400);
     
-        primaryStage.setTitle("FXML Welcome");
+        primaryStage.setTitle("Clothing Store Inventory Management");
         primaryStage.setScene(scene);
+        primaryStage.setAlwaysOnTop(true);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
