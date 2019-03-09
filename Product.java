@@ -1,50 +1,106 @@
-public abstract class Product{
-    private String productCode;
-    private String productName;
-    private int inventoryCount;
-    private double pricePerUnit;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 
+public class Product{
+    private static int count;
+    private ObjectProperty<Integer> productCode = new SimpleObjectProperty<Integer>(null);
+    private StringProperty productName=new SimpleStringProperty();
+    private ObjectProperty<Integer> inventoryCount= new SimpleObjectProperty<>(0);
+    private ObjectProperty<Double> pricePerUnit=new SimpleObjectProperty<Double>(0.0);
+    protected StringProperty category=new SimpleStringProperty();
+
+    Product(){
+        
+    }
+
+    Product(String category){
+        
+        setCategory(category);
+       
+    }
+
+    Product(String name, int inventory, double price, String category){
+        productCode.set(count+1);
+        setCategory(category);
+        setProductName(name);
+        setInventoryCount(inventory);
+        setPricePerUnit(price);
+        count++;
+    }
+
+    public ObjectProperty<Integer> productCodeProperty(){
+        return productCode;
+    }
+
+    public StringProperty productNameProperty(){
+        return productName;
+    }
+
+    public ObjectProperty<Integer> inventoryCountProperty(){
+        return inventoryCount;
+    }
+
+    public ObjectProperty<Double> pricePerUnitProperty(){
+        return pricePerUnit;
+    }
+
+    public StringProperty categoryProperty(){
+        return category;
+    }
     //mutators
-    void setProductCode(String code){
-        this.productCode=code;
+    void setProductCode(Integer code){
+        productCode.set(code);;
     }
 
     void setProductName(String desc){
-        this.productName=desc;
+        this.productName.set(desc);;
     }
 
-    void setInventoryCount(int quantity){
-        this.inventoryCount=quantity;
+    void setInventoryCount(Integer quantity){
+        this.inventoryCount.set(quantity);
     }
 
-    void setPricePerUnit(double price){
-        this.pricePerUnit=price;
+    void setPricePerUnit(Double price){
+        this.pricePerUnit.set(price);
+    }
+
+    void setCategory(String category){
+        this.category.set(category);
     }
 
     //accessors
-    String getProductCode(){
-        return this.productCode;
+    Integer getProductCode(){
+        return productCode.get();
     }
 
     String getProductName(){
-        return this.productName;
+        return this.productName.get();
     }
 
-    int getInventoryCount(){
-        return this.inventoryCount;
+    Integer getInventoryCount(){
+        return this.inventoryCount.get();
     }
 
-    double getPricePerUnit(){
-        return this.pricePerUnit;
+    Double getPricePerUnit(){
+        return this.pricePerUnit.get();
     }
+
+    String getCategory(){
+        return this.category.get();
+    }
+
 
     //methods
     void addInventory(int quantity){
-        this.inventoryCount+=quantity;
+        int count = getInventoryCount() + quantity;
+        this.inventoryCount.set(count);
     }
 
     void removeInventory(int quantity){
-        this.inventoryCount-=quantity;
+        int count = getInventoryCount() - quantity;
+        this.inventoryCount.set(count);
     }
 
     

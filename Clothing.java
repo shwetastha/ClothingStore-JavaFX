@@ -1,36 +1,50 @@
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Clothing extends Product{
-    private String size;
-    private String color;
-    private String category;
+    private StringProperty size = new SimpleStringProperty();
+    private StringProperty color = new SimpleStringProperty();
+    
+
 
     Clothing(){
-        this.category="Clothing";
-        this.size="";
-        this.color="";
+        super(Consts.CLOTHING);
+
+        setSize("");
+        setColor("");
     }
 
-    Clothing(String size, String color){
-        this.size=size;
-        this.color=color;
-        this.category="Clothing";
+    Clothing(String name, int inventory, double price, String size, String color){
+        super(name, inventory, price, Consts.CLOTHING);
+
+        setSize(size);
+        setColor(color);
+    }
+
+    StringProperty sizeProperty(){
+        return size;
+    }
+
+    StringProperty colorProperty(){
+        return color;
     }
     //mutators
     void setSize(String size){
-        this.size=size;
+        this.size.set(size);
     }
 
     void setColor(String color){
-        this.color=color;
+        this.color.set(color);
     }
 
     
     //accessors
     String getSize(){
-        return this.size;
+        return this.size.get();
     }
 
     String getColor(){
-        return this.color;
+        return this.color.get();
     }
 
     

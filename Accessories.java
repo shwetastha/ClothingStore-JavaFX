@@ -1,23 +1,30 @@
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Accessories extends Product{
-    private String type;//sunglasses, earrings, anklets
-    private String category;
+    private StringProperty type = new SimpleStringProperty();//sunglasses, earrings, anklets
 
     Accessories(){
-        this.type="";
-        this.category="Accesories";
+        super(Consts.ACCESSORIES);
+        setType("");
+        
     }
     
-    Accessories(String type){
-        this.type=type;
-        this.category="Accesories";
+    Accessories(String name, int inventory, double price, String type){
+        super(name, inventory, price, Consts.ACCESSORIES);
+        
+        setType(type);
     }
     
+    StringProperty typeProperty(){
+        return type;
+    }
     void setType(String type){
-        this.type=type;
+        this.type.set(type);
     }
 
     String getType(){
-        return this.type;
+        return this.type.get();
     }
 
     
