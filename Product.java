@@ -7,7 +7,7 @@ public class Product{
     private static int count;
     private ObjectProperty<Integer> productCode = new SimpleObjectProperty<Integer>(null);
     private StringProperty productName=new SimpleStringProperty();
-    private ObjectProperty<Integer> inventoryCount= new SimpleObjectProperty<>(0);
+    private ObjectProperty<Integer> inventoryCount= new SimpleObjectProperty<>(1);
     private ObjectProperty<Double> pricePerUnit=new SimpleObjectProperty<Double>(0.0);
     protected StringProperty category=new SimpleStringProperty();
 

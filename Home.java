@@ -7,14 +7,13 @@ import javafx.stage.Stage;
 public class Home extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("inventory.fxml"));
-    
+
         Scene scene = new Scene(root, 600, 400);
-    
+
         primaryStage.setTitle("Clothing Store Inventory Management");
         primaryStage.setScene(scene);
-        primaryStage.setAlwaysOnTop(true);
         primaryStage.setResizable(false);
         primaryStage.show();
     }

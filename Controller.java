@@ -1,20 +1,21 @@
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
-import java.util.Observable;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.binding.StringFormatter;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -22,12 +23,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.NumberStringConverter;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
+
 
 public class Controller implements Initializable{
 
@@ -117,6 +119,7 @@ public class Controller implements Initializable{
 
     private final Clothing currentProduct = new Clothing();
     private final ObservableList products = FXCollections.observableArrayList();
+    private final HashMap<Integer, Clothing> productsMap = new HashMap <>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -141,8 +144,9 @@ public class Controller implements Initializable{
         //     }
         // });
 
+        // Validating Price Textfield to take only Double values
+        // Ref: https://stackoverflow.com/a/31043122/6013612
         DecimalFormat format = new DecimalFormat( "#.0" );
-
         textFieldPrice.setTextFormatter( new TextFormatter<>(c ->
         {
             if ( c.getControlNewText().isEmpty() )
@@ -196,9 +200,6 @@ public class Controller implements Initializable{
         color.setCellValueFactory(rowData -> rowData.getValue().colorProperty());
         // type.setCellValueFactory(rowData -> rowData.getValue().typeProperty());
         
-        products.addAll(
-        new Clothing("Brown Pants", 5, 15.4, "M", "Brown"),
-        new Clothing("White Shirts", 3, 10.4, "M", "White"));
 
         StringBinding addButtonStringBinding = new StringBinding(){
             {
@@ -216,11 +217,45 @@ public class Controller implements Initializable{
         buttonAdd.textProperty().bind(addButtonStringBinding);
         buttonAdd.disableProperty().bind(Bindings.greaterThan(3,currentProduct.productNameProperty().length()));
         
-
-
         tableViewInventory.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Clothing> observable, Clothing oldVal, Clothing newVal) -> {
             setCurrentProduct(newVal);
         });
+
+        
+    }
+
+    @FXML
+    private void addActionClicked(ActionEvent event){
+        if(currentProduct.getProductCode()==null){
+            Clothing c = new Clothing(currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), currentProduct.getSize(), currentProduct.getColor());
+            products.add(c);
+            productsMap.put(c.getProductCode(), c);
+        } else {
+            Clothing c = productsMap.get(currentProduct.getProductCode());
+            c.setProductName(currentProduct.getProductName());
+            c.setCategory(currentProduct.getCategory());
+            c.setInventoryCount(currentProduct.getInventoryCount());
+            c.setPricePerUnit(currentProduct.getPricePerUnit());
+            c.setSize(currentProduct.getSize());
+            c.setColor(currentProduct.getColor());
+        }
+        setCurrentProduct(null);
+    }
+
+    @FXML
+    private void cancelActionClicked(ActionEvent event){
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setHeaderText("Are you sure you want to cancel?");
+        alert.setTitle("Cancelling");
+        alert.getButtonTypes().remove(0,2);
+        alert.getButtonTypes().add(0, ButtonType.YES);
+        alert.getButtonTypes().add(1, ButtonType.NO);
+        Optional<ButtonType> confirmationResponse =  alert.showAndWait();
+        if(confirmationResponse.get() == ButtonType.YES){
+            setCurrentProduct(null);
+            tableViewInventory.getSelectionModel().clearSelection();   
+        }
+        
     }
 
     private void setCurrentProduct(Clothing selectedProduct) {

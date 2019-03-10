@@ -41,8 +41,8 @@
             <!-- <TableColumn fx:id="type" prefWidth="75.0" text="Type" /> -->
          </columns>
       </TableView>
-      <Button fx:id="buttonAdd" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <Button fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <Button fx:id="buttonAdd" onAction="#addActionClicked" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Button fx:id="buttonCancel" onAction="#cancelActionClicked" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="3" />
       <HBox fx:id="hboxCategory" alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="68.0" text="Category" />
