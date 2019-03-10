@@ -14,11 +14,19 @@ public class Clothing extends Product{
         setColor("");
     }
 
-    Clothing(String name, int inventory, double price, String size, String color){
-        super(name, inventory, price, Consts.CLOTHING);
+    Clothing(Integer code,String name, int inventory, double price, String size, String color){
+        super(code,name, inventory, price, Consts.CLOTHING);
 
         setSize(size);
         setColor(color);
+    }
+
+    Clothing(String[] array){
+        super(Integer.valueOf(array[0]),array[1], Integer.valueOf(array[2]), 
+        Double.valueOf(array[3]), array[4]);
+
+        setSize(array[5]);
+        setColor(array[6]);
     }
 
     StringProperty sizeProperty(){

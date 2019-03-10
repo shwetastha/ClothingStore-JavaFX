@@ -1,8 +1,11 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -27,16 +30,49 @@ public class Home extends Application {
         primaryStage.setTitle("Clothing Store Inventory Management");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        controller.setProductsMap(readProductsInventory());
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(this::onClose);
+    }
+
+    private HashMap<Integer, Clothing> readProductsInventory(){
+        BufferedReader fi =null;
+        HashMap<Integer, Clothing> productsMap = new HashMap<>();
+        Clothing c = null;
+        try{
+            fi = new BufferedReader(new FileReader(Consts.FILENAME));
+            String line = fi.readLine();
+            while (line!=null)
+			{
+                LogUtil.printLog(line);
+                String[] lineArray = line.split(Consts.DELIM);
+                if(lineArray.length==Consts.ATTRIBUTE){
+                    c=new Clothing(lineArray);
+                    productsMap.put(c.getProductCode(), c);
+                }
+                line = fi.readLine();
+			}// end while loop
+			fi.close(); 
+        }catch(Exception e){
+            LogUtil.printError("Exception While Reading: "+e.toString());
+            if(fi!=null){
+                try{
+                    fi.close();
+                }catch(Exception e2){
+                    LogUtil.printError("Exception While Reading: "+e.toString());
+                }
+            }
+        }finally{
+            return productsMap;
+        }
     }
 
     private void onClose(WindowEvent event) {
         BufferedWriter fo = null;
 
         try {
-            fo = new BufferedWriter(new FileWriter("productsInventory.csv", true));
+            fo = new BufferedWriter(new FileWriter(Consts.FILENAME));
             for (Integer i : controller.getProductsMap().keySet()) {
                 fo.append(controller.getProductsMap().get(i).toCSV());
             }

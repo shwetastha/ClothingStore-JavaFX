@@ -124,13 +124,21 @@ public class Controller implements Initializable{
     public HashMap<Integer, Clothing> getProductsMap(){
         return this.productsMap;
     }
-    
+
+    public void setProductsMap(HashMap<Integer, Clothing> initialProductsMap){
+        products.clear();
+        productsMap.clear();
+        productsMap.putAll(initialProductsMap);
+        products.addAll(initialProductsMap.values());
+        lastCode=productsMap.keySet().stream().max(Integer::compare).get();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         textViewProductName.setText("Product Name");
         comboboxCategory.getItems().addAll(Consts.CLOTHING, Consts.ACCESSORIES);
         textFieldPrice.setTextFormatter(new TextFormatter<Double>(new DoubleStringConverter()));
-        spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 9999, 1, 1));
+        spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9999, 1, 1));
         labelColor.setDisable(true);
         labelSize.setDisable(true);
         textFieldColor.setDisable(true);
@@ -227,11 +235,11 @@ public class Controller implements Initializable{
 
         
     }
-
+    Integer lastCode=0;
     @FXML
     private void addActionClicked(ActionEvent event){
         if(currentProduct.getProductCode()==null){
-            Clothing c = new Clothing(currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), currentProduct.getSize(), currentProduct.getColor());
+            Clothing c = new Clothing(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), currentProduct.getSize(), currentProduct.getColor());
             products.add(c);
             productsMap.put(c.getProductCode(), c);
         } else {

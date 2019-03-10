@@ -10,8 +10,8 @@ public class Accessories extends Product{
         
     }
     
-    Accessories(String name, int inventory, double price, String type){
-        super(name, inventory, price, Consts.ACCESSORIES);
+    Accessories(Integer code, String name, int inventory, double price, String type){
+        super(code, name, inventory, price, Consts.ACCESSORIES);
         
         setType(type);
     }

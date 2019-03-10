@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Product{
-    private static int count;
     private ObjectProperty<Integer> productCode = new SimpleObjectProperty<Integer>(null);
     private StringProperty productName=new SimpleStringProperty();
     private ObjectProperty<Integer> inventoryCount= new SimpleObjectProperty<>(1);
@@ -21,13 +20,12 @@ public class Product{
        
     }
 
-    Product(String name, int inventory, double price, String category){
-        productCode.set(count+1);
+    Product(Integer code, String name, int inventory, double price, String category){
+        setProductCode(code);;
         setCategory(category);
         setProductName(name);
         setInventoryCount(inventory);
         setPricePerUnit(price);
-        count++;
     }
 
     public ObjectProperty<Integer> productCodeProperty(){
