@@ -28,7 +28,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.input.MouseEvent;
 
 
 public class Controller implements Initializable{
@@ -118,7 +117,7 @@ public class Controller implements Initializable{
     // private Label labelType;
 
     private final Clothing currentProduct = new Clothing();
-    private final ObservableList products = FXCollections.observableArrayList();
+    private final ObservableList<Clothing> products = FXCollections.observableArrayList();
     private final HashMap<Integer, Clothing> productsMap = new HashMap <>();
 
     public HashMap<Integer, Clothing> getProductsMap(){
