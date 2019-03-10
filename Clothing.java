@@ -54,6 +54,7 @@ public class Clothing extends Product{
          + "," + getCategory()
          + "," + getSize()
          + "," + getColor()
+         +"\n"
          ;
         return str;
     }
