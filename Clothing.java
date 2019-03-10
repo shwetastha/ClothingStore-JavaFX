@@ -47,5 +47,15 @@ public class Clothing extends Product{
         return this.color.get();
     }
 
+    public String toCSV () {
+        String str;
+        str = getProductCode() + "," + getProductName() + "," + getInventoryCount() 
+         + "," + getPricePerUnit()
+         + "," + getCategory()
+         + "," + getSize()
+         + "," + getColor()
+         ;
+        return str;
+    }
     
 }

@@ -121,6 +121,10 @@ public class Controller implements Initializable{
     private final ObservableList products = FXCollections.observableArrayList();
     private final HashMap<Integer, Clothing> productsMap = new HashMap <>();
 
+    public HashMap<Integer, Clothing> getProductsMap(){
+        return this.productsMap;
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         textViewProductName.setText("Product Name");

@@ -103,5 +103,12 @@ public class Product{
         this.inventoryCount.set(count);
     }
 
+    public String toCSV () {
+        String str;
+        str = getProductCode() + "," + getProductName() + "," + getInventoryCount() 
+         + "," + getPricePerUnit()
+         + "," + getCategory();
+        return str;
+    }
     
 }
