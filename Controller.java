@@ -33,7 +33,7 @@ import javafx.scene.control.Alert.AlertType;
 public class Controller implements Initializable{
 
     @FXML
-    private TableView<Clothing> tableViewInventory;
+    private TableView<Product> tableViewInventory;
 
     @FXML
     private TableColumn<Product, Integer> productCode;
@@ -110,21 +110,21 @@ public class Controller implements Initializable{
     @FXML
     private TextField textFieldSize, textFieldColor;
     
-    // @FXML 
-    // private TextField textFieldType;
+    @FXML 
+    private TextField textFieldType;
 
-    // @FXML
-    // private Label labelType;
+    @FXML
+    private Label labelType;
 
-    private final Clothing currentProduct = new Clothing();
-    private final ObservableList<Clothing> products = FXCollections.observableArrayList();
-    private final HashMap<Integer, Clothing> productsMap = new HashMap <>();
+    private Product currentProduct = null;
+    private final ObservableList<Product> products = FXCollections.observableArrayList();
+    private final HashMap<Integer, Product> productsMap = new HashMap <>();
 
-    public HashMap<Integer, Clothing> getProductsMap(){
+    public HashMap<Integer, Product> getProductsMap(){
         return this.productsMap;
     }
 
-    public void setProductsMap(HashMap<Integer, Clothing> initialProductsMap){
+    public void setProductsMap(HashMap<Integer, Product> initialProductsMap){
         products.clear();
         productsMap.clear();
         productsMap.putAll(initialProductsMap);
@@ -136,24 +136,10 @@ public class Controller implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         textViewProductName.setText("Product Name");
         comboboxCategory.getItems().addAll(Consts.CLOTHING, Consts.ACCESSORIES);
+        
         textFieldPrice.setTextFormatter(new TextFormatter<Double>(new DoubleStringConverter()));
         spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9999, 1, 1));
-        labelColor.setDisable(true);
-        labelSize.setDisable(true);
-        textFieldColor.setDisable(true);
-        textFieldSize.setDisable(true);
-        // labelType.setDisable(true);
-        // textFieldType.setDisable(true);
-
-        // textFieldPrice.textProperty().addListener(new ChangeListener<String>() {
-        //     @Override
-        //     public void changed(ObservableValue<? extends String> observable, String oldValue, 
-        //         String newValue) {
-        //         if (!newValue.matches("\\d*[.]?\\d*")) {
-        //             textFieldPrice.setText(newValue.replaceAll("[^\\d]||[^.]", ""));
-        //         }
-        //     }
-        // });
+        
 
         // Validating Price Textfield to take only Double values
         // Ref: https://stackoverflow.com/a/31043122/6013612
@@ -175,31 +161,64 @@ public class Controller implements Initializable{
         comboboxCategory.valueProperty().addListener((ov, oldval, newval) -> {
             
             if(Consts.CLOTHING.equalsIgnoreCase(newval)){
+                currentProduct = new Clothing();
+                textFieldSize.textProperty().bindBidirectional(((Clothing)currentProduct).sizeProperty());
+                textFieldColor.textProperty().bindBidirectional(((Clothing)currentProduct).colorProperty());
+                labelType.setDisable(true);
+                textFieldType.setDisable(true);
                 labelColor.setDisable(false);
                 labelSize.setDisable(false);
                 textFieldColor.setDisable(false);
                 textFieldSize.setDisable(false);
-                // labelType.setDisable(true);
-                // textFieldType.setDisable(true);
-            }else if(Consts.ACCESSORIES.equalsIgnoreCase(newval)){
-                // labelType.setDisable(false);
-                // textFieldType.setDisable(false);
+
+                }else if(Consts.ACCESSORIES.equalsIgnoreCase(newval)){
+                currentProduct = new Accessories();
+                textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
                 labelColor.setDisable(true);
                 labelSize.setDisable(true);
                 textFieldColor.setDisable(true);
                 textFieldSize.setDisable(true);
+                labelType.setDisable(false);
+                textFieldType.setDisable(false);
+                textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
+                comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
+                textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
+                spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
+                
+                //accessory
+                textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
             }
             
         });
+        comboboxCategory.getSelectionModel().selectFirst();
 
+        if(comboboxCategory.getValue().equalsIgnoreCase(Consts.CLOTHING)){
+            currentProduct = new Clothing();
+            textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
+            comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
+            textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
+            spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
+            
+            //clothing
+            textFieldSize.textProperty().bindBidirectional(((Clothing)currentProduct).sizeProperty());
+            textFieldColor.textProperty().bindBidirectional(((Clothing)currentProduct).colorProperty());
+        }else if(comboboxCategory.getValue().equalsIgnoreCase(Consts.ACCESSORIES)){
+            currentProduct=new Accessories();
+            textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
+            comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
+            textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
+            spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
+            
+            //accessory
+            textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
+        }
         
+
         textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
         comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
         textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
         spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
-        textFieldSize.textProperty().bindBidirectional(currentProduct.sizeProperty());
-        textFieldColor.textProperty().bindBidirectional(currentProduct.colorProperty());
-        
+      
         tableViewInventory.setItems(products);
         
         productCode.setCellValueFactory(rowData -> rowData.getValue().productCodeProperty());
@@ -207,9 +226,21 @@ public class Controller implements Initializable{
         quantity.setCellValueFactory(rowData -> rowData.getValue().inventoryCountProperty());
         price.setCellValueFactory(rowData -> Bindings.concat("$",rowData.getValue().pricePerUnitProperty()));
         category.setCellValueFactory(rowData -> rowData.getValue().categoryProperty());
-        size.setCellValueFactory(rowData -> rowData.getValue().sizeProperty());
-        color.setCellValueFactory(rowData -> rowData.getValue().colorProperty());
-        // type.setCellValueFactory(rowData -> rowData.getValue().typeProperty());
+        size.setCellValueFactory(rowData ->{ 
+            if(rowData.getValue() instanceof Clothing)
+                return ((Clothing)rowData.getValue()).sizeProperty();
+            return null;
+        });
+        color.setCellValueFactory(rowData ->{ 
+            if(rowData.getValue() instanceof Clothing)
+                return ((Clothing)rowData.getValue()).colorProperty();
+            return null;
+        });
+        type.setCellValueFactory(rowData ->{ 
+            if(rowData.getValue() instanceof Accessories)
+                return ((Accessories)rowData.getValue()).typeProperty();
+            return null;
+        });
         
 
         StringBinding addButtonStringBinding = new StringBinding(){
@@ -228,7 +259,9 @@ public class Controller implements Initializable{
         buttonAdd.textProperty().bind(addButtonStringBinding);
         buttonAdd.disableProperty().bind(Bindings.greaterThan(3,currentProduct.productNameProperty().length()));
         
-        tableViewInventory.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Clothing> observable, Clothing oldVal, Clothing newVal) -> {
+        tableViewInventory.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
+            
+            
             setCurrentProduct(newVal);
         });
 
@@ -237,20 +270,35 @@ public class Controller implements Initializable{
     Integer lastCode=0;
     @FXML
     private void addActionClicked(ActionEvent event){
-        if(currentProduct.getProductCode()==null){
-            Clothing c = new Clothing(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), currentProduct.getSize(), currentProduct.getColor());
-            products.add(c);
-            productsMap.put(c.getProductCode(), c);
-        } else {
-            Clothing c = productsMap.get(currentProduct.getProductCode());
-            c.setProductName(currentProduct.getProductName());
-            c.setCategory(currentProduct.getCategory());
-            c.setInventoryCount(currentProduct.getInventoryCount());
-            c.setPricePerUnit(currentProduct.getPricePerUnit());
-            c.setSize(currentProduct.getSize());
-            c.setColor(currentProduct.getColor());
-        }
-        setCurrentProduct(null);
+    //     if(currentProduct.getProductCode()==null){
+    //         if(currentProduct.getCategory().equalsIgnoreCase(Consts.CLOTHING)){
+    //             Clothing clothing = new Clothing(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Clothing)currentProduct).getSize(), ((Clothing)currentProduct).getColor());
+    //             products.add(clothing);
+    //             productsMap.put(clothing.getProductCode(), clothing);
+    //         }else if(currentProduct.getCategory().equalsIgnoreCase(Consts.ACCESSORIES)){
+    //             Accessories accessories = new Accessories(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Accessories)currentProduct).getType());
+    //             products.add(accessories);
+    //             productsMap.put(accessories.getProductCode(), accessories);
+    //         }
+    //     } else {
+    //         if(currentProduct.getCategory().equalsIgnoreCase(Consts.CLOTHING)){
+    //             Clothing clothing = productsMap.get(currentProduct.getProductCode());
+    //             products.add(clothing);
+    //             productsMap.put(clothing.getProductCode(), clothing);
+    //         }else if(currentProduct.getCategory().equalsIgnoreCase(Consts.ACCESSORIES)){
+    //             Accessories accessories = new Accessories(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Accessories)currentProduct).getType());
+    //             products.add(accessories);
+    //             productsMap.put(accessories.getProductCode(), accessories);
+    //         }
+    //         Clothing c = productsMap.get(currentProduct.getProductCode());
+    //         c.setProductName(currentProduct.getProductName());
+    //         c.setCategory(currentProduct.getCategory());
+    //         c.setInventoryCount(currentProduct.getInventoryCount());
+    //         c.setPricePerUnit(currentProduct.getPricePerUnit());
+    //         c.setSize(currentProduct.getSize());
+    //         c.setColor(currentProduct.getColor());
+    //     }
+    //     setCurrentProduct(null);
     }
 
     @FXML
@@ -269,24 +317,53 @@ public class Controller implements Initializable{
         
     }
 
-    private void setCurrentProduct(Clothing selectedProduct) {
+    private void setCurrentProduct(Product selectedProduct) {
+        System.out.println("SetCurrentProduct");
         if (selectedProduct!=null){
+            System.out.println("SetCurrentProduct: If not null");
+            if(selectedProduct instanceof Clothing){
+                System.out.println("SetCurrentProduct: Clothing");
+                currentProduct = new Clothing();
+                
+                //clothing
+                
+                textFieldSize.textProperty().bindBidirectional(((Clothing)currentProduct).sizeProperty());
+                textFieldColor.textProperty().bindBidirectional(((Clothing)currentProduct).colorProperty());
+                ((Clothing)currentProduct).setSize(((Clothing)selectedProduct).getSize());
+                ((Clothing)currentProduct).setColor(((Clothing)selectedProduct).getColor());
+                System.out.println("SetCurrentProduct: Clothing END");
+            }else if(selectedProduct instanceof Accessories){
+                System.out.println("SetCurrentProduct: Accessories");
+                currentProduct = new Accessories();
+                //accessory
+                textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
+                ((Accessories)currentProduct).setType(((Accessories)selectedProduct).getType());    
+                System.out.println("SetCurrentProduct: Accesories END");
+            }
+            
             currentProduct.setProductCode(selectedProduct.getProductCode());
             currentProduct.setProductName(selectedProduct.getProductName());
             currentProduct.setCategory(selectedProduct.getCategory());
             currentProduct.setInventoryCount(selectedProduct.getInventoryCount());
             currentProduct.setPricePerUnit(selectedProduct.getPricePerUnit());
-            currentProduct.setSize(selectedProduct.getSize());
-            currentProduct.setColor(selectedProduct.getColor());
+            System.out.println("SetCurrentProduct: If no null END");
         } else {
+            System.out.println("SetCurrentProduct: If null");
+            //default is selected as Clothing
+            currentProduct= new Clothing();
             currentProduct.setProductCode(null);
             currentProduct.setProductName("");
             currentProduct.setCategory("");
             currentProduct.setInventoryCount(0);
             currentProduct.setPricePerUnit(0.0);
-            currentProduct.setSize("");
-            currentProduct.setColor("");
+
         }
+
+        textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
+        comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
+        textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
+        spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
+            
     }
 
     

@@ -33,10 +33,10 @@ public class Home extends Application {
         primaryStage.setOnCloseRequest(this::onClose);
     }
 
-    private HashMap<Integer, Clothing> readProductsInventory(){
+    private HashMap<Integer, Product> readProductsInventory(){
         BufferedReader fi =null;
-        HashMap<Integer, Clothing> productsMap = new HashMap<>();
-        Clothing c = null;
+        HashMap<Integer, Product> productsMap = new HashMap<>();
+        
         try{
             fi = new BufferedReader(new FileReader(Consts.FILENAME));
             String line = fi.readLine();
@@ -44,9 +44,12 @@ public class Home extends Application {
 			{
                 LogUtil.printLog(line);
                 String[] lineArray = line.split(Consts.DELIM);
-                if(lineArray.length==Consts.ATTRIBUTE){
-                    c=new Clothing(lineArray);
-                    productsMap.put(c.getProductCode(), c);
+                if(lineArray[4].equalsIgnoreCase(Consts.CLOTHING)){
+                    Clothing clothing=new Clothing(lineArray);
+                    productsMap.put(clothing.getProductCode(), clothing);
+                }else if (lineArray[4].equalsIgnoreCase(Consts.ACCESSORIES)){
+                    Accessories accessories=new Accessories(lineArray);
+                    productsMap.put(accessories.getProductCode(), accessories);
                 }
                 line = fi.readLine();
 			}// end while loop

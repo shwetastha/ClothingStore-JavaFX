@@ -3,7 +3,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Product{
+public abstract class Product{
     private ObjectProperty<Integer> productCode = new SimpleObjectProperty<Integer>(null);
     private StringProperty productName=new SimpleStringProperty();
     private ObjectProperty<Integer> inventoryCount= new SimpleObjectProperty<>(1);
@@ -74,6 +74,7 @@ public class Product{
     }
 
     String getProductName(){
+        LogUtil.printLog("Product: "+this.productName.get());
         return this.productName.get();
     }
 
@@ -105,7 +106,8 @@ public class Product{
         String str;
         str = getProductCode() + "," + getProductName() + "," + getInventoryCount() 
          + "," + getPricePerUnit()
-         + "," + getCategory();
+         + "," + getCategory()
+         + ",,," ;
         return str;
     }
     

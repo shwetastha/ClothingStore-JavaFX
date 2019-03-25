@@ -3,5 +3,5 @@ public final class Consts{
     public static final String ACCESSORIES ="Accessories";
     public static final String DELIM=",";
     public static final String FILENAME="productsInventory.csv";
-    public static final int ATTRIBUTE=7;
+    public static final int ATTRIBUTE=8;
 }

@@ -16,6 +16,12 @@ public class Accessories extends Product{
         setType(type);
     }
     
+    Accessories(String[] array){
+        super(Integer.valueOf(array[0]),array[1], Integer.valueOf(array[2]), 
+        Double.valueOf(array[3]), array[4]);
+        //5,6 for size and color
+        setType(array[7]);
+    }
     StringProperty typeProperty(){
         return type;
     }
@@ -27,5 +33,17 @@ public class Accessories extends Product{
         return this.type.get();
     }
 
+    public String toCSV () {
+        String str;
+        str = getProductCode() + "," + getProductName() + "," + getInventoryCount() 
+         + "," + getPricePerUnit()
+         + "," + getCategory()
+         + "," 
+         + "," 
+         + "," + getType()
+         + System.lineSeparator()
+         ;
+        return str;
+    }
     
 }
