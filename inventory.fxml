@@ -32,17 +32,17 @@
       <TableView fx:id="tableViewInventory" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <columns>
             <TableColumn fx:id="productCode" prefWidth="50.0" text="Code" />
-            <TableColumn fx:id="productName" prefWidth="140.0" text="Name" />
-            <TableColumn fx:id="quantity" prefWidth="65.0" text="Quantity" />
-            <TableColumn fx:id="price" prefWidth="95.0" text="Price" />
-            <TableColumn fx:id="category" prefWidth="95.0" text="Category" />
-            <TableColumn fx:id="size" prefWidth="55.0" text="Size" />
+            <TableColumn fx:id="productName" prefWidth="120.0" text="Name" />
+            <TableColumn fx:id="quantity" prefWidth="55.0" text="Quantity" />
+            <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="category" prefWidth="85.0" text="Category" />
+            <TableColumn fx:id="size" prefWidth="45.0" text="Size" />
             <TableColumn fx:id="color" prefWidth="75.0" text="Color" />
-            <!-- <TableColumn fx:id="type" prefWidth="75.0" text="Type" /> -->
+            <TableColumn fx:id="type" prefWidth="75.0" text="Type" />
          </columns>
       </TableView>
-      <Button fx:id="buttonAdd" onAction="#addActionClicked" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <Button fx:id="buttonCancel" onAction="#cancelActionClicked" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="88.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <Button fx:id="buttonAdd" alignment="CENTER" mnemonicParsing="false" onAction="#addActionClicked" prefHeight="25.0" prefWidth="88.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Button fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" onAction="#cancelActionClicked" prefHeight="25.0" prefWidth="88.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="3" />
       <HBox fx:id="hboxCategory" alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
             <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="68.0" text="Category" />
@@ -83,11 +83,11 @@
             <TextField fx:id="textFieldColor" prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <!-- <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <children>
             <Label fx:id="labelType" prefHeight="17.0" prefWidth="54.0" text="Type" />
             <TextField fx:id="textFieldType" prefHeight="25.0" prefWidth="137.0" />
          </children>
-      </HBox> -->
+      </HBox>
    </children>
 </GridPane>
