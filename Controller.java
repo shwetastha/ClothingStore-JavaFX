@@ -261,7 +261,6 @@ public class Controller implements Initializable{
         
         tableViewInventory.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
             
-            
             setCurrentProduct(newVal);
         });
 
@@ -270,35 +269,40 @@ public class Controller implements Initializable{
     Integer lastCode=0;
     @FXML
     private void addActionClicked(ActionEvent event){
-    //     if(currentProduct.getProductCode()==null){
-    //         if(currentProduct.getCategory().equalsIgnoreCase(Consts.CLOTHING)){
-    //             Clothing clothing = new Clothing(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Clothing)currentProduct).getSize(), ((Clothing)currentProduct).getColor());
-    //             products.add(clothing);
-    //             productsMap.put(clothing.getProductCode(), clothing);
-    //         }else if(currentProduct.getCategory().equalsIgnoreCase(Consts.ACCESSORIES)){
-    //             Accessories accessories = new Accessories(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Accessories)currentProduct).getType());
-    //             products.add(accessories);
-    //             productsMap.put(accessories.getProductCode(), accessories);
-    //         }
-    //     } else {
-    //         if(currentProduct.getCategory().equalsIgnoreCase(Consts.CLOTHING)){
-    //             Clothing clothing = productsMap.get(currentProduct.getProductCode());
-    //             products.add(clothing);
-    //             productsMap.put(clothing.getProductCode(), clothing);
-    //         }else if(currentProduct.getCategory().equalsIgnoreCase(Consts.ACCESSORIES)){
-    //             Accessories accessories = new Accessories(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Accessories)currentProduct).getType());
-    //             products.add(accessories);
-    //             productsMap.put(accessories.getProductCode(), accessories);
-    //         }
-    //         Clothing c = productsMap.get(currentProduct.getProductCode());
-    //         c.setProductName(currentProduct.getProductName());
-    //         c.setCategory(currentProduct.getCategory());
-    //         c.setInventoryCount(currentProduct.getInventoryCount());
-    //         c.setPricePerUnit(currentProduct.getPricePerUnit());
-    //         c.setSize(currentProduct.getSize());
-    //         c.setColor(currentProduct.getColor());
-    //     }
-    //     setCurrentProduct(null);
+        if(currentProduct.getProductCode()==null){
+            if(currentProduct instanceof Clothing){
+                Clothing clothing = new Clothing(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Clothing)currentProduct).getSize(), ((Clothing)currentProduct).getColor());
+                products.add(clothing);
+                productsMap.put(clothing.getProductCode(), clothing);
+            }else if(currentProduct instanceof Accessories){
+                Accessories accessories = new Accessories(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Accessories)currentProduct).getType());
+                products.add(accessories);
+                productsMap.put(accessories.getProductCode(), accessories);
+            }
+        } else {
+            if(currentProduct instanceof Clothing){
+                Clothing clothing = (Clothing)productsMap.get(currentProduct.getProductCode());
+                products.add(clothing);
+                productsMap.put(clothing.getProductCode(), clothing);
+                clothing.setProductName(currentProduct.getProductName());
+                clothing.setCategory(currentProduct.getCategory());
+                clothing.setInventoryCount(currentProduct.getInventoryCount());
+                clothing.setPricePerUnit(currentProduct.getPricePerUnit());
+                clothing.setSize(((Clothing)currentProduct).getSize());
+                clothing.setColor(((Clothing)currentProduct).getColor());
+            }else if(currentProduct instanceof Accessories){
+                Accessories accessories = (Accessories)productsMap.get(currentProduct.getProductCode());
+                products.add(accessories);
+                productsMap.put(accessories.getProductCode(), accessories);
+                accessories.setProductName(currentProduct.getProductName());
+                accessories.setCategory(currentProduct.getCategory());
+                accessories.setInventoryCount(currentProduct.getInventoryCount());
+                accessories.setPricePerUnit(currentProduct.getPricePerUnit());
+                accessories.setType(((Accessories)currentProduct).getType());
+            }
+            
+        }
+        setCurrentProduct(null);
     }
 
     @FXML
@@ -329,6 +333,8 @@ public class Controller implements Initializable{
                 
                 textFieldSize.textProperty().bindBidirectional(((Clothing)currentProduct).sizeProperty());
                 textFieldColor.textProperty().bindBidirectional(((Clothing)currentProduct).colorProperty());
+                System.out.println("Size=>"+((Clothing)selectedProduct).getSize());
+                
                 ((Clothing)currentProduct).setSize(((Clothing)selectedProduct).getSize());
                 ((Clothing)currentProduct).setColor(((Clothing)selectedProduct).getColor());
                 System.out.println("SetCurrentProduct: Clothing END");
@@ -356,6 +362,10 @@ public class Controller implements Initializable{
             currentProduct.setCategory("");
             currentProduct.setInventoryCount(0);
             currentProduct.setPricePerUnit(0.0);
+            ((Clothing)currentProduct).setSize("");
+            ((Clothing)currentProduct).setColor("");
+            currentProduct= new Accessories();
+            ((Accessories)currentProduct).setType("");
 
         }
 
