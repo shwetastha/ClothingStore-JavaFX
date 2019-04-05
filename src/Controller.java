@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 
 import javafx.beans.binding.StringBinding;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,6 +40,9 @@ public class Controller implements Initializable{
 
     @FXML
     private TableColumn<Product, String> productName;
+
+    @FXML
+    private TableColumn<Product, String> productType;
 
     @FXML
     private TableColumn<Product, Integer> quantity;
@@ -187,6 +191,7 @@ public class Controller implements Initializable{
 
         productCode.setCellValueFactory(new PropertyValueFactory<>("productCode"));
         productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        productType.setCellValueFactory(new PropertyValueFactory<>("productType"));
         quantity.setCellValueFactory(new PropertyValueFactory<>("inventoryCount"));
         price.setCellValueFactory(new PropertyValueFactory<>("pricePerUnit"));
         category.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -196,7 +201,7 @@ public class Controller implements Initializable{
 
 //        StringBinding addButtonStringBinding = new StringBinding(){
 //            {
-//                super.bind(currentProduct.productCodeProperty());
+//                super.bind();
 //            }
 //            @Override
 //            protected String computeValue() {
@@ -206,7 +211,7 @@ public class Controller implements Initializable{
 //                    return "Update";
 //            }
 //        };
-
+//
 //        buttonAdd.textProperty().bind(addButtonStringBinding);
 //        buttonAdd.disableProperty().bind(Bindings.greaterThan(3,currentProduct.productNameProperty().length()));
         
@@ -271,6 +276,9 @@ public class Controller implements Initializable{
             currentProduct.setCategory(selectedProduct.getCategory());
             currentProduct.setInventoryCount(selectedProduct.getInventoryCount());
             currentProduct.setPricePerUnit(selectedProduct.getPricePerUnit());
+
+            buttonAdd.setText("Update");
+            setAllFields(currentProduct);
         } else {
             if(currentProduct instanceof Clothing){
                 currentProduct= new Clothing();
@@ -289,6 +297,7 @@ public class Controller implements Initializable{
                 currentProduct.setInventoryCount(0);
                 currentProduct.setPricePerUnit(0.0);
             }
+            buttonAdd.setText("Add");
             clearAllFields();
         }
     }
@@ -300,6 +309,18 @@ public class Controller implements Initializable{
         textFieldSize.setText("");
         textFieldPrice.setText("");
         spinnerQuantity.getValueFactory().setValue(1);
+    }
+
+    void setAllFields(Product p){
+        if(p instanceof Clothing){
+            textFieldColor.setText(((Clothing)p).getColor());
+            textFieldSize.setText(((Clothing)p).getSize());
+        }
+        textViewProductName.setText(p.getProductName());
+        comboboxProductType.getSelectionModel().select(p.getProductType());
+        textFieldCategory.setText(p.getCategory());
+        textFieldPrice.setText(p.getPricePerUnit().toString());
+        spinnerQuantity.getValueFactory().setValue(p.getInventoryCount());
     }
 
     
