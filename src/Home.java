@@ -35,7 +35,7 @@ public class Home extends Application {
         HashMap<Integer, Product> productsMap = new HashMap<>();
 
         try{
-            fi = new BufferedReader(new InputStreamReader(Home.class.getResourceAsStream(Consts.FILENAME)));
+            fi = new BufferedReader(new FileReader(new File(Consts.FILENAME)));
             String line = fi.readLine();
             while (line!=null)
             {

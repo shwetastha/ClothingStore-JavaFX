@@ -51,7 +51,6 @@ public class Clothing extends Product{
                 + "," + getCategory()
          + "," + getSize()
          + "," + getColor()
-         + "," 
          + System.lineSeparator()
          ;
         return str;

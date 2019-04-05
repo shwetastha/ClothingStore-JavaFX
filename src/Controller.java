@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 
+import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,9 +54,6 @@ public class Controller implements Initializable{
 
     @FXML
     private TableColumn<Clothing, String> color;
-
-    @FXML
-    private TableColumn<Accessories, String> type;
 
     @FXML
     private Button buttonAdd;
@@ -108,12 +106,6 @@ public class Controller implements Initializable{
     @FXML
     private TextField textFieldSize, textFieldColor;
     
-    @FXML 
-    private TextField textFieldType;
-
-    @FXML
-    private Label labelType;
-
     @FXML
     private Label labelCategory;
 
@@ -165,23 +157,16 @@ public class Controller implements Initializable{
             
             if(Consts.CLOTHING.equalsIgnoreCase(newval)){
                 currentProduct = new Clothing();
-                labelType.setDisable(true);
-                textFieldType.setDisable(true);
                 labelColor.setDisable(false);
                 labelSize.setDisable(false);
                 textFieldColor.setDisable(false);
                 textFieldSize.setDisable(false);
-
-                }else if(Consts.ACCESSORIES.equalsIgnoreCase(newval)){
+            }else if(Consts.ACCESSORIES.equalsIgnoreCase(newval)){
                 currentProduct = new Accessories();
                 labelColor.setDisable(true);
                 labelSize.setDisable(true);
                 textFieldColor.setDisable(true);
                 textFieldSize.setDisable(true);
-                labelType.setDisable(false);
-                textFieldType.setDisable(false);
-
-                //accessory
             }
             
         });
@@ -200,15 +185,13 @@ public class Controller implements Initializable{
 
         tableViewInventory.setItems(products);
 
-        productCode.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productCode"));
-        productName.setCellValueFactory(new PropertyValueFactory<Product, String>("productName"));
-        quantity.setCellValueFactory(new PropertyValueFactory<Product, Integer>("inventoryCount"));
-        price.setCellValueFactory(new PropertyValueFactory<Product, Double>("pricePerUnit"));
-        category.setCellValueFactory(new PropertyValueFactory<Product, String>("category"));
-        size.setCellValueFactory(new PropertyValueFactory<Clothing, String>("size"));
-        color.setCellValueFactory(new PropertyValueFactory<Clothing, String>("color"));
-        type.setCellValueFactory(new PropertyValueFactory<Accessories, String>("type"));
-
+        productCode.setCellValueFactory(new PropertyValueFactory<>("productCode"));
+        productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        quantity.setCellValueFactory(new PropertyValueFactory<>("inventoryCount"));
+        price.setCellValueFactory(new PropertyValueFactory<>("pricePerUnit"));
+        category.setCellValueFactory(new PropertyValueFactory<>("category"));
+        size.setCellValueFactory(new PropertyValueFactory<>("size"));
+        color.setCellValueFactory(new PropertyValueFactory<>("color"));
 
 
 //        StringBinding addButtonStringBinding = new StringBinding(){
@@ -250,7 +233,6 @@ public class Controller implements Initializable{
                     textViewProductName.getText(),
                     spinnerQuantity.getValue(),
                     Double.parseDouble(textFieldPrice.getText()),
-                    textFieldType.getText(),
                     textFieldCategory.getText());
         }
         products.add(currentProduct);
@@ -275,55 +257,45 @@ public class Controller implements Initializable{
     }
 
     private void setCurrentProduct(Product selectedProduct) {
-        System.out.println("SetCurrentProduct");
         if (selectedProduct!=null){
-            System.out.println("SetCurrentProduct: If not null");
+            System.out.println("SetCurrentProduct");
             if(selectedProduct instanceof Clothing){
-                System.out.println("SetCurrentProduct: Clothing");
                 currentProduct = new Clothing();
-                
-                //clothing
-                
-                System.out.println("Size=>"+((Clothing)selectedProduct).getSize());
-                
                 ((Clothing)currentProduct).setSize(((Clothing)selectedProduct).getSize());
                 ((Clothing)currentProduct).setColor(((Clothing)selectedProduct).getColor());
-                System.out.println("SetCurrentProduct: Clothing END");
             }else if(selectedProduct instanceof Accessories){
-                System.out.println("SetCurrentProduct: Accessories");
                 currentProduct = new Accessories();
-                //accessory
-                ((Accessories)currentProduct).setType(((Accessories)selectedProduct).getType());
-                System.out.println("SetCurrentProduct: Accesories END");
             }
-            
             currentProduct.setProductCode(selectedProduct.getProductCode());
             currentProduct.setProductName(selectedProduct.getProductName());
             currentProduct.setCategory(selectedProduct.getCategory());
             currentProduct.setInventoryCount(selectedProduct.getInventoryCount());
             currentProduct.setPricePerUnit(selectedProduct.getPricePerUnit());
-            System.out.println("SetCurrentProduct: If no null END");
         } else {
-            System.out.println("SetCurrentProduct: If null");
-            //default is selected as Clothing
-            currentProduct= new Clothing();
-            currentProduct.setProductCode(null);
-            currentProduct.setProductName("");
-            currentProduct.setCategory("");
-            currentProduct.setInventoryCount(0);
-            currentProduct.setPricePerUnit(0.0);
-            ((Clothing)currentProduct).setSize("");
-            ((Clothing)currentProduct).setColor("");
+            if(currentProduct instanceof Clothing){
+                currentProduct= new Clothing();
+                currentProduct.setProductCode(null);
+                currentProduct.setProductName("");
+                currentProduct.setCategory("");
+                currentProduct.setInventoryCount(0);
+                currentProduct.setPricePerUnit(0.0);
+                ((Clothing)currentProduct).setSize("");
+                ((Clothing)currentProduct).setColor("");
+            } else if (currentProduct instanceof Accessories){
+                currentProduct= new Accessories();
+                currentProduct.setProductCode(null);
+                currentProduct.setProductName("");
+                currentProduct.setCategory("");
+                currentProduct.setInventoryCount(0);
+                currentProduct.setPricePerUnit(0.0);
+            }
             clearAllFields();
-
         }
-
     }
 
     void clearAllFields(){
         textViewProductName.setText("");
         textFieldCategory.setText("");
-        textFieldType.setText("");
         textFieldColor.setText("");
         textFieldSize.setText("");
         textFieldPrice.setText("");
