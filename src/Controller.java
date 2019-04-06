@@ -225,23 +225,31 @@ public class Controller implements Initializable{
     Integer lastCode=0;
     @FXML
     private void addActionClicked(ActionEvent event){
-        if(comboboxProductType.getValue().equalsIgnoreCase(Consts.CLOTHING)){
-            currentProduct = new Clothing(++lastCode,
-                    textViewProductName.getText(),
-                    spinnerQuantity.getValue(),
-                    Double.parseDouble(textFieldPrice.getText()),
-                    textFieldSize.getText(),
-                    textFieldColor.getText(),
-                    textFieldCategory.getText());
-        }else if(comboboxProductType.getValue().equalsIgnoreCase(Consts.ACCESSORIES)){
-            currentProduct = new Accessories(++lastCode,
-                    textViewProductName.getText(),
-                    spinnerQuantity.getValue(),
-                    Double.parseDouble(textFieldPrice.getText()),
-                    textFieldCategory.getText());
+        if (currentProduct.getProductCode() != null ){
+            LogUtil.printLog("Update");
+            getAllFields(productsMap.get(currentProduct.getProductCode()));
+            tableViewInventory.refresh();
+        }else {
+            if (comboboxProductType.getValue().equalsIgnoreCase(Consts.CLOTHING)) {
+                currentProduct = new Clothing(++lastCode,
+                        textViewProductName.getText(),
+                        spinnerQuantity.getValue(),
+                        Double.parseDouble(textFieldPrice.getText()),
+                        textFieldSize.getText(),
+                        textFieldColor.getText(),
+                        textFieldCategory.getText());
+
+            } else if (comboboxProductType.getValue().equalsIgnoreCase(Consts.ACCESSORIES)) {
+                currentProduct = new Accessories(++lastCode,
+                        textViewProductName.getText(),
+                        spinnerQuantity.getValue(),
+                        Double.parseDouble(textFieldPrice.getText()),
+                        textFieldCategory.getText());
+                products.add(currentProduct);
+                productsMap.put(currentProduct.getProductCode(), currentProduct);
+            }
         }
-        products.add(currentProduct);
-        productsMap.put(currentProduct.getProductCode(), currentProduct);
+
         setCurrentProduct(null);
     }
 
@@ -321,6 +329,19 @@ public class Controller implements Initializable{
         textFieldCategory.setText(p.getCategory());
         textFieldPrice.setText(p.getPricePerUnit().toString());
         spinnerQuantity.getValueFactory().setValue(p.getInventoryCount());
+    }
+
+    Product getAllFields(Product p){
+        if(p instanceof Clothing){
+            ((Clothing)p).setColor(textFieldColor.getText());
+            ((Clothing)p).setSize(textFieldSize.getText());
+        }
+        p.setProductName(textViewProductName.getText());
+        p.setProductType(comboboxProductType.getValue());
+        p.setCategory(textFieldCategory.getText());
+        p.setPricePerUnit(Double.parseDouble(textFieldPrice.getText()));
+        p.setInventoryCount(spinnerQuantity.getValue());
+        return p;
     }
 
     
