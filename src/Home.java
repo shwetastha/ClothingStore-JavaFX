@@ -23,7 +23,7 @@ public class Home extends Application {
 
         primaryStage.setTitle("Clothing Store Inventory Management");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
+//        primaryStage.setResizable(false);
         controller.setProductsMap(readProductsInventory());
         primaryStage.show();
 

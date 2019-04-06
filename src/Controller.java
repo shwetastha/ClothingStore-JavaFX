@@ -1,33 +1,19 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.converter.DoubleStringConverter;
+
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-
-import javafx.beans.binding.StringBinding;
-import javafx.beans.property.ObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.fxml.Initializable;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.Alert.AlertType;
 
 
 public class Controller implements Initializable{
@@ -63,40 +49,13 @@ public class Controller implements Initializable{
     private Button buttonAdd;
 
     @FXML
-    private Button buttonCancel;
-
-    @FXML
-    private HBox hboxCategory;
-
-    @FXML
-    private Label labelProductType;
-
-    @FXML
     private ComboBox<String> comboboxProductType;
-
-    @FXML
-    private HBox hboxName;
-
-    @FXML
-    private Label labelProductName;
 
     @FXML
     private TextField textViewProductName;
 
     @FXML
-    private HBox hboxPrice;
-
-    @FXML
-    private Label labelPrice;
-
-    @FXML
     private TextField textFieldPrice;
-
-    @FXML
-    private HBox hboxQuantity;
-
-    @FXML
-    private Label labelQuantity;
 
     @FXML
     private Spinner<Integer> spinnerQuantity;
@@ -111,10 +70,14 @@ public class Controller implements Initializable{
     private TextField textFieldSize, textFieldColor;
     
     @FXML
-    private Label labelCategory;
+    private TextField textFieldCategory;
 
     @FXML
-    private TextField textFieldCategory;
+    private Button buttonGenerateReport;
+
+    @FXML
+    private TextArea textAreaReport;
+
 
     private Product currentProduct = null;
     private final ObservableList<Product> products = FXCollections.observableArrayList();
@@ -134,11 +97,11 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        textAreaReport.setEditable(false);
         comboboxProductType.getItems().addAll(Consts.CLOTHING, Consts.ACCESSORIES);
         
         textFieldPrice.setTextFormatter(new TextFormatter<Double>(new DoubleStringConverter()));
         spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9999, 1, 1));
-        
 
         // Validating Price Textfield to take only Double values
         // Ref: https://stackoverflow.com/a/31043122/6013612
@@ -178,15 +141,10 @@ public class Controller implements Initializable{
 
         if(comboboxProductType.getValue().equalsIgnoreCase(Consts.CLOTHING)){
             currentProduct = new Clothing();
-
-            //clothing
         }else if(comboboxProductType.getValue().equalsIgnoreCase(Consts.ACCESSORIES)){
             currentProduct=new Accessories();
-            //accessory
         }
         
-
-
         tableViewInventory.setItems(products);
 
         productCode.setCellValueFactory(new PropertyValueFactory<>("productCode"));
@@ -199,20 +157,6 @@ public class Controller implements Initializable{
         color.setCellValueFactory(new PropertyValueFactory<>("color"));
 
 
-//        StringBinding addButtonStringBinding = new StringBinding(){
-//            {
-//                super.bind();
-//            }
-//            @Override
-//            protected String computeValue() {
-//                if(currentProduct.getProductCode()==null)
-//                    return "Add";
-//                else
-//                    return "Update";
-//            }
-//        };
-//
-//        buttonAdd.textProperty().bind(addButtonStringBinding);
 //        buttonAdd.disableProperty().bind(Bindings.greaterThan(3,currentProduct.productNameProperty().length()));
         
         tableViewInventory.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
@@ -220,7 +164,7 @@ public class Controller implements Initializable{
             setCurrentProduct(newVal);
         });
 
-        
+
     }
     Integer lastCode=0;
     @FXML
@@ -267,6 +211,78 @@ public class Controller implements Initializable{
             tableViewInventory.getSelectionModel().clearSelection();   
         }
         
+    }
+    @FXML
+    private void generateReportActionClicked(ActionEvent event){
+        String report="";
+        report +="Low in Stock!";
+
+
+        String[] categoryArray= new String[10];
+        int[] productTypeArray=new int[2];//0 clothing, 1 Accesorries
+        int[] categoryCountInventory=new int[10];
+        boolean exists;
+        int countCat=0;
+        for (int i =0;i<products.size();i++) {
+            exists=false;
+            String cat=products.get(i).getCategory();
+            if (products.get(i) instanceof Clothing)
+                productTypeArray[0]+=products.get(i).getInventoryCount();
+            else if (products.get(i) instanceof Accessories)
+                productTypeArray[1]+=products.get(i).getInventoryCount();
+
+            if(products.get(i).getInventoryCount()<3){
+                report+="\n\tProduct Code: "+products.get(i).getProductCode()
+                        +"\n\tProduct Name: "+products.get(i).getProductName()
+                        +"\n\tIn Stock: "+products.get(i).getInventoryCount();
+                report += "\n\t****************";
+            }
+
+            for(int j=0; j<categoryArray.length;j++){
+                if(categoryArray[j]!=null && cat.equalsIgnoreCase(categoryArray[j])){
+                    exists=true;
+                    categoryCountInventory[j]+=products.get(i).getInventoryCount();
+                    break;
+                }
+            }
+            if (!exists){
+                categoryArray[countCat]=cat;
+                categoryCountInventory[countCat]=products.get(i).getInventoryCount();
+                countCat++;
+            }
+        }
+
+
+        report += "\n------------------------------------------------\n";
+        report += "ProductType: Clothing \t In Stock: "+productTypeArray[0]+"\n";
+        report += "ProductType: Accessories \t In Stock: "+productTypeArray[1]+"\n";
+        report += "------------------------------------------------\n";
+        /**Sorting the categoryArray List*/
+
+        for (int i = 0; i <countCat; i++) {
+
+            for (int j = 0; j < categoryArray.length - i - 1; j++) {
+                if (categoryArray[j+1]!= null && categoryArray[j].compareTo(categoryArray[j + 1])>0) {
+                    String temp = categoryArray[j];
+                    categoryArray[j] = categoryArray[j + 1];
+                    categoryArray[j + 1] = temp;
+
+                    int tempBmi = categoryCountInventory[j];
+                    categoryCountInventory[j] = categoryCountInventory[j + 1];
+                    categoryCountInventory[j + 1] = tempBmi;
+                }
+
+            }
+        }
+
+        for(int i=0; i<countCat;i++){
+            if(categoryArray[i]!=null){
+                report= report+"Category: "+categoryArray[i]+" \t In Stock: "+categoryCountInventory[i]+"\n";
+            }
+        }
+        report += "------------------------------------------------\n";
+        textAreaReport.setText(report);
+
     }
 
     private void setCurrentProduct(Product selectedProduct) {
