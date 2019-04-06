@@ -15,9 +15,9 @@
 <GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
   <columnConstraints>
       <ColumnConstraints maxWidth="195.0" minWidth="0.0" prefWidth="0.0" />
-      <ColumnConstraints maxWidth="230.0" minWidth="10.0" prefWidth="210.0" />
-      <ColumnConstraints maxWidth="330.0" minWidth="10.0" prefWidth="178.66668701171875" />
-      <ColumnConstraints maxWidth="174.0" minWidth="10.0" prefWidth="171.33331298828125" />
+      <ColumnConstraints maxWidth="230.0" minWidth="10.0" prefWidth="191.0" />
+      <ColumnConstraints maxWidth="330.0" minWidth="10.0" prefWidth="182.0" />
+      <ColumnConstraints maxWidth="187.0" minWidth="10.0" prefWidth="187.0" />
       <ColumnConstraints maxWidth="65.0" minWidth="0.0" prefWidth="0.0" />
   </columnConstraints>
   <rowConstraints>
@@ -32,13 +32,13 @@
       <TableView fx:id="tableViewInventory" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <columns>
             <TableColumn fx:id="productCode" prefWidth="50.0" text="Code" />
-            <TableColumn fx:id="productName" prefWidth="100.0" text="Name" />
+            <TableColumn fx:id="productName" prefWidth="95.0" text="Name" />
+            <TableColumn fx:id="productType" prefWidth="90.0" text="Product Type" />
             <TableColumn fx:id="quantity" prefWidth="65.0" text="Quantity" />
-            <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="price" prefWidth="65.0" text="Price" />
             <TableColumn fx:id="category" prefWidth="95.0" text="Category" />
             <TableColumn fx:id="size" prefWidth="45.0" text="Size" />
-            <TableColumn fx:id="color" prefWidth="75.0" text="Color" />
-            <TableColumn fx:id="type" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="color" prefWidth="70.0" text="Color" />
          </columns>
       </TableView>
       <Button fx:id="buttonAdd" alignment="CENTER" mnemonicParsing="false" onAction="#addActionClicked" prefHeight="25.0" prefWidth="111.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="2" />
@@ -85,15 +85,10 @@
       </GridPane>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <children>
-            <Label fx:id="labelType" prefHeight="17.0" prefWidth="54.0" text="Type" />
-            <TextField fx:id="textFieldType" prefHeight="25.0" prefWidth="128.0" />
+            <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="54.0" text="Category" />
+            <TextField fx:id="textFieldCategory" prefHeight="25.0" prefWidth="125.0" />
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="134.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
-         <children>
-            <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="66.0" text="Category" />
-            <TextField fx:id="textFieldCategory" prefHeight="25.0" prefWidth="99.0" />
-         </children>
-      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="134.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
    </children>
 </GridPane>
