@@ -3,103 +3,90 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public abstract class Product{
-    private ObjectProperty<Integer> productCode = new SimpleObjectProperty<Integer>(null);
-    private StringProperty productName=new SimpleStringProperty();
-    private ObjectProperty<Integer> inventoryCount= new SimpleObjectProperty<>(1);
-    private ObjectProperty<Double> pricePerUnit=new SimpleObjectProperty<Double>(0.0);
-    protected StringProperty category=new SimpleStringProperty();
+public class Product{
+    private Integer productCode;
+    private String productName;
+    private String productType;
+    private Integer inventoryCount;
+    private Double pricePerUnit;
+    protected String category;
 
     Product(){
-        
+
     }
 
-    Product(String category){
-        
-        setCategory(category);
-       
+    Product(String productType){
+
+        setProductType(productType);
+
     }
 
-    Product(Integer code, String name, int inventory, double price, String category){
-        setProductCode(code);;
+    Product(Integer code, String name, int inventory, double price, String productType, String category){
+        setProductCode(code);
         setCategory(category);
         setProductName(name);
         setInventoryCount(inventory);
         setPricePerUnit(price);
+        setProductType(productType);
     }
 
-    public ObjectProperty<Integer> productCodeProperty(){
+    public Integer getProductCode() {
         return productCode;
     }
 
-    public StringProperty productNameProperty(){
+    public void setProductCode(Integer productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getProductName() {
         return productName;
     }
 
-    public ObjectProperty<Integer> inventoryCountProperty(){
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public Integer getInventoryCount() {
         return inventoryCount;
     }
 
-    public ObjectProperty<Double> pricePerUnitProperty(){
+    public void setInventoryCount(Integer inventoryCount) {
+        this.inventoryCount = inventoryCount;
+    }
+
+    public Double getPricePerUnit() {
         return pricePerUnit;
     }
 
-    public StringProperty categoryProperty(){
+    public void setPricePerUnit(Double pricePerUnit) {
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    public String getCategory() {
         return category;
     }
-    //mutators
-    void setProductCode(Integer code){
-        productCode.set(code);;
-    }
 
-    void setProductName(String desc){
-        this.productName.set(desc);;
+    public void setCategory(String category) {
+        this.category = category;
     }
-
-    void setInventoryCount(Integer quantity){
-        this.inventoryCount.set(quantity);
-    }
-
-    void setPricePerUnit(Double price){
-        this.pricePerUnit.set(price);
-    }
-
-    void setCategory(String category){
-        this.category.set(category);
-    }
-
-    //accessors
-    Integer getProductCode(){
-        return productCode.get();
-    }
-
-    String getProductName(){
-        LogUtil.printLog("Product: "+this.productName.get());
-        return this.productName.get();
-    }
-
-    Integer getInventoryCount(){
-        return this.inventoryCount.get();
-    }
-
-    Double getPricePerUnit(){
-        return this.pricePerUnit.get();
-    }
-
-    String getCategory(){
-        return this.category.get();
-    }
-
 
     //methods
     void addInventory(int quantity){
         int count = getInventoryCount() + quantity;
-        this.inventoryCount.set(count);
+        this.inventoryCount=(count);
     }
 
     void removeInventory(int quantity){
         int count = getInventoryCount() - quantity;
-        this.inventoryCount.set(count);
+        this.inventoryCount=(count);
     }
 
     public String toCSV () {

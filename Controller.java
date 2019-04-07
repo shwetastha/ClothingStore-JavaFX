@@ -1,33 +1,19 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.converter.DoubleStringConverter;
+
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.fxml.Initializable;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.Alert.AlertType;
 
 
 public class Controller implements Initializable{
@@ -42,10 +28,13 @@ public class Controller implements Initializable{
     private TableColumn<Product, String> productName;
 
     @FXML
+    private TableColumn<Product, String> productType;
+
+    @FXML
     private TableColumn<Product, Integer> quantity;
 
     @FXML
-    private TableColumn<Product, String> price;
+    private TableColumn<Product, Double> price;
 
     @FXML
     private TableColumn<Product, String> category;
@@ -57,46 +46,16 @@ public class Controller implements Initializable{
     private TableColumn<Clothing, String> color;
 
     @FXML
-    private TableColumn<Accessories, String> type;
-
-    @FXML
     private Button buttonAdd;
 
     @FXML
-    private Button buttonCancel;
-
-    @FXML
-    private HBox hboxCategory;
-
-    @FXML
-    private Label labelCategory;
-
-    @FXML
-    private ComboBox<String> comboboxCategory;
-
-    @FXML
-    private HBox hboxName;
-
-    @FXML
-    private Label labelProductName;
+    private ComboBox<String> comboboxProductType;
 
     @FXML
     private TextField textViewProductName;
 
     @FXML
-    private HBox hboxPrice;
-
-    @FXML
-    private Label labelPrice;
-
-    @FXML
     private TextField textFieldPrice;
-
-    @FXML
-    private HBox hboxQuantity;
-
-    @FXML
-    private Label labelQuantity;
 
     @FXML
     private Spinner<Integer> spinnerQuantity;
@@ -110,11 +69,14 @@ public class Controller implements Initializable{
     @FXML
     private TextField textFieldSize, textFieldColor;
     
-    @FXML 
-    private TextField textFieldType;
+    @FXML
+    private TextField textFieldCategory;
 
     @FXML
-    private Label labelType;
+    private TextArea textAreaReport;
+
+    DecimalFormat df=new DecimalFormat("#,###.00");
+
 
     private Product currentProduct = null;
     private final ObservableList<Product> products = FXCollections.observableArrayList();
@@ -134,12 +96,11 @@ public class Controller implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textViewProductName.setText("Product Name");
-        comboboxCategory.getItems().addAll(Consts.CLOTHING, Consts.ACCESSORIES);
+        textAreaReport.setEditable(false);
+        comboboxProductType.getItems().addAll(Consts.CLOTHING, Consts.ACCESSORIES);
         
         textFieldPrice.setTextFormatter(new TextFormatter<Double>(new DoubleStringConverter()));
         spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9999, 1, 1));
-        
 
         // Validating Price Textfield to take only Double values
         // Ref: https://stackoverflow.com/a/31043122/6013612
@@ -158,150 +119,80 @@ public class Controller implements Initializable{
                 return c;
         }));
         
-        comboboxCategory.valueProperty().addListener((ov, oldval, newval) -> {
+        comboboxProductType.valueProperty().addListener((ov, oldval, newval) -> {
             
             if(Consts.CLOTHING.equalsIgnoreCase(newval)){
                 currentProduct = new Clothing();
-                textFieldSize.textProperty().bindBidirectional(((Clothing)currentProduct).sizeProperty());
-                textFieldColor.textProperty().bindBidirectional(((Clothing)currentProduct).colorProperty());
-                labelType.setDisable(true);
-                textFieldType.setDisable(true);
                 labelColor.setDisable(false);
                 labelSize.setDisable(false);
                 textFieldColor.setDisable(false);
                 textFieldSize.setDisable(false);
-
-                }else if(Consts.ACCESSORIES.equalsIgnoreCase(newval)){
+            }else if(Consts.ACCESSORIES.equalsIgnoreCase(newval)){
                 currentProduct = new Accessories();
-                textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
                 labelColor.setDisable(true);
                 labelSize.setDisable(true);
                 textFieldColor.setDisable(true);
                 textFieldSize.setDisable(true);
-                labelType.setDisable(false);
-                textFieldType.setDisable(false);
-                textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
-                comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
-                textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
-                spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
-                
-                //accessory
-                textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
             }
             
         });
-        comboboxCategory.getSelectionModel().selectFirst();
+        comboboxProductType.getSelectionModel().selectFirst();
 
-        if(comboboxCategory.getValue().equalsIgnoreCase(Consts.CLOTHING)){
+        if(comboboxProductType.getValue().equalsIgnoreCase(Consts.CLOTHING)){
             currentProduct = new Clothing();
-            textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
-            comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
-            textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
-            spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
-            
-            //clothing
-            textFieldSize.textProperty().bindBidirectional(((Clothing)currentProduct).sizeProperty());
-            textFieldColor.textProperty().bindBidirectional(((Clothing)currentProduct).colorProperty());
-        }else if(comboboxCategory.getValue().equalsIgnoreCase(Consts.ACCESSORIES)){
+        }else if(comboboxProductType.getValue().equalsIgnoreCase(Consts.ACCESSORIES)){
             currentProduct=new Accessories();
-            textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
-            comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
-            textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
-            spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
-            
-            //accessory
-            textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
         }
         
-
-        textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
-        comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
-        textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
-        spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
-      
         tableViewInventory.setItems(products);
-        
-        productCode.setCellValueFactory(rowData -> rowData.getValue().productCodeProperty());
-        productName.setCellValueFactory(rowData -> rowData.getValue().productNameProperty());
-        quantity.setCellValueFactory(rowData -> rowData.getValue().inventoryCountProperty());
-        price.setCellValueFactory(rowData -> Bindings.concat("$",rowData.getValue().pricePerUnitProperty()));
-        category.setCellValueFactory(rowData -> rowData.getValue().categoryProperty());
-        size.setCellValueFactory(rowData ->{ 
-            if(rowData.getValue() instanceof Clothing)
-                return ((Clothing)rowData.getValue()).sizeProperty();
-            return null;
-        });
-        color.setCellValueFactory(rowData ->{ 
-            if(rowData.getValue() instanceof Clothing)
-                return ((Clothing)rowData.getValue()).colorProperty();
-            return null;
-        });
-        type.setCellValueFactory(rowData ->{ 
-            if(rowData.getValue() instanceof Accessories)
-                return ((Accessories)rowData.getValue()).typeProperty();
-            return null;
-        });
-        
 
-        StringBinding addButtonStringBinding = new StringBinding(){
-            {
-                super.bind(currentProduct.productCodeProperty());
-            }
-            @Override
-            protected String computeValue() {
-                if(currentProduct.getProductCode()==null)
-                    return "Add";
-                else
-                    return "Update";
-            }
-        };
+        productCode.setCellValueFactory(new PropertyValueFactory<>("productCode"));
+        productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        productType.setCellValueFactory(new PropertyValueFactory<>("productType"));
+        quantity.setCellValueFactory(new PropertyValueFactory<>("inventoryCount"));
+        price.setCellValueFactory(new PropertyValueFactory<>("pricePerUnit"));
+        category.setCellValueFactory(new PropertyValueFactory<>("category"));
+        size.setCellValueFactory(new PropertyValueFactory<>("size"));
+        color.setCellValueFactory(new PropertyValueFactory<>("color"));
 
-        buttonAdd.textProperty().bind(addButtonStringBinding);
-        buttonAdd.disableProperty().bind(Bindings.greaterThan(3,currentProduct.productNameProperty().length()));
+
+//        buttonAdd.disableProperty().bind(Bindings.greaterThan(3,currentProduct.productNameProperty().length()));
         
         tableViewInventory.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
             
             setCurrentProduct(newVal);
         });
 
-        
+
     }
     Integer lastCode=0;
     @FXML
     private void addActionClicked(ActionEvent event){
-        if(currentProduct.getProductCode()==null){
-            if(currentProduct instanceof Clothing){
-                Clothing clothing = new Clothing(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Clothing)currentProduct).getSize(), ((Clothing)currentProduct).getColor());
-                products.add(clothing);
-                productsMap.put(clothing.getProductCode(), clothing);
-            }else if(currentProduct instanceof Accessories){
-                Accessories accessories = new Accessories(++lastCode,currentProduct.getProductName(), currentProduct.getInventoryCount(), currentProduct.getPricePerUnit(), ((Accessories)currentProduct).getType());
-                products.add(accessories);
-                productsMap.put(accessories.getProductCode(), accessories);
+        if (currentProduct.getProductCode() != null ){
+            LogUtil.printLog("Update");
+            getAllFields(productsMap.get(currentProduct.getProductCode()));
+            tableViewInventory.refresh();
+        }else {
+            if (comboboxProductType.getValue().equalsIgnoreCase(Consts.CLOTHING)) {
+                currentProduct = new Clothing(++lastCode,
+                        textViewProductName.getText(),
+                        spinnerQuantity.getValue(),
+                        Double.parseDouble(textFieldPrice.getText()),
+                        textFieldSize.getText(),
+                        textFieldColor.getText(),
+                        textFieldCategory.getText());
+
+            } else if (comboboxProductType.getValue().equalsIgnoreCase(Consts.ACCESSORIES)) {
+                currentProduct = new Accessories(++lastCode,
+                        textViewProductName.getText(),
+                        spinnerQuantity.getValue(),
+                        Double.parseDouble(textFieldPrice.getText()),
+                        textFieldCategory.getText());
+                products.add(currentProduct);
+                productsMap.put(currentProduct.getProductCode(), currentProduct);
             }
-        } else {
-            if(currentProduct instanceof Clothing){
-                Clothing clothing = (Clothing)productsMap.get(currentProduct.getProductCode());
-                products.add(clothing);
-                productsMap.put(clothing.getProductCode(), clothing);
-                clothing.setProductName(currentProduct.getProductName());
-                clothing.setCategory(currentProduct.getCategory());
-                clothing.setInventoryCount(currentProduct.getInventoryCount());
-                clothing.setPricePerUnit(currentProduct.getPricePerUnit());
-                clothing.setSize(((Clothing)currentProduct).getSize());
-                clothing.setColor(((Clothing)currentProduct).getColor());
-            }else if(currentProduct instanceof Accessories){
-                Accessories accessories = (Accessories)productsMap.get(currentProduct.getProductCode());
-                products.add(accessories);
-                productsMap.put(accessories.getProductCode(), accessories);
-                accessories.setProductName(currentProduct.getProductName());
-                accessories.setCategory(currentProduct.getCategory());
-                accessories.setInventoryCount(currentProduct.getInventoryCount());
-                accessories.setPricePerUnit(currentProduct.getPricePerUnit());
-                accessories.setType(((Accessories)currentProduct).getType());
-            }
-            
         }
+
         setCurrentProduct(null);
     }
 
@@ -320,60 +211,166 @@ public class Controller implements Initializable{
         }
         
     }
+    @FXML
+    private void generateReportActionClicked(ActionEvent event){
+        String report="";
+
+
+        String[] categoryArray= new String[10];
+        int[] productTypeArray=new int[2];//0 clothing, 1 Accesorries
+        double[] productTypePriceArray=new double[2];
+        int[] categoryCountInventory=new int[10];
+        double[] categoryPrice=new double[10];
+        boolean exists;
+        int countCat=0;
+
+        for (int i =0;i<products.size();i++) {
+            exists=false;
+            String cat=products.get(i).getCategory();
+            /**Counting the productTypes in the inventory based on the object type.**/
+            if (products.get(i) instanceof Clothing) {
+                productTypeArray[0] += products.get(i).getInventoryCount();
+                productTypePriceArray[0] += (products.get(i).getInventoryCount()*products.get(i).getPricePerUnit());
+            }else if (products.get(i) instanceof Accessories) {
+                productTypeArray[1] += products.get(i).getInventoryCount();
+                productTypePriceArray[1] += (products.get(i).getInventoryCount()*products.get(i).getPricePerUnit());
+            }
+
+            /**Displaying the list of items that are low in stock, inventory count is less than 3.**/
+            if(products.get(i).getInventoryCount()<4){
+                report +="Low in Stock!";
+
+                report+="\n\tProduct Code: "+products.get(i).getProductCode()
+                        +"\n\tProduct Name: "+products.get(i).getProductName()
+                        +"\n\tIn Stock: "+products.get(i).getInventoryCount();
+                report += "\n\t****************\n";
+            }
+
+            /**Counting based on the category.**/
+            for(int j=0; j<categoryArray.length;j++){
+                if(categoryArray[j]!=null && cat.equalsIgnoreCase(categoryArray[j])){
+                    exists=true;
+                    categoryCountInventory[j]+=products.get(i).getInventoryCount();
+                    categoryPrice[j]+=(products.get(i).getInventoryCount()*products.get(i).getPricePerUnit());
+                    break;
+                }
+            }
+            if (!exists){
+                categoryArray[countCat]=cat;
+                categoryCountInventory[countCat]=products.get(i).getInventoryCount();
+                categoryPrice[countCat]=products.get(i).getInventoryCount()*products.get(i).getPricePerUnit();
+                countCat++;
+            }
+        }
+
+        /**Sorting the categoryArray List*/
+        for (int i = 0; i <countCat; i++) {
+
+            for (int j = 0; j < categoryArray.length - i - 1; j++) {
+                if (categoryArray[j+1]!= null && categoryArray[j].compareTo(categoryArray[j + 1])>0) {
+                    String temp = categoryArray[j];
+                    categoryArray[j] = categoryArray[j + 1];
+                    categoryArray[j + 1] = temp;
+
+                    int tempBmi = categoryCountInventory[j];
+                    categoryCountInventory[j] = categoryCountInventory[j + 1];
+                    categoryCountInventory[j + 1] = tempBmi;
+                }
+            }
+        }
+        report += "------------------------------------------------\n";
+
+        /**Displaying the sorted Category and the count.**/
+        for(int i=0; i<countCat;i++){
+            if(categoryArray[i]!=null){
+                report= report+"Category: "+categoryArray[i]
+                        +"\n\t In Stock: "+categoryCountInventory[i]
+                        +"\n\t Sub Total Cost: $"+df.format(categoryPrice[i])+"\n";
+            }
+        }
+
+        report += "------------------------------------------------\n";
+        report += "ProductType: Clothing \n\t In Stock: "+productTypeArray[0]+"\n\t Sub Total Cost: $"+df.format(productTypePriceArray[0])+"\n";
+        report += "ProductType: Accessories \n\t In Stock: "+productTypeArray[1]+"\n\t Sub Total Cost: $"+df.format(productTypePriceArray[1])+"\n";
+        report += "------------------------------------------------\n";
+        report += "Total Cost: $"+df.format(productTypePriceArray[0]+productTypePriceArray[1])+"\n";
+        textAreaReport.setText(report);
+
+    }
 
     private void setCurrentProduct(Product selectedProduct) {
-        System.out.println("SetCurrentProduct");
         if (selectedProduct!=null){
-            System.out.println("SetCurrentProduct: If not null");
+            System.out.println("SetCurrentProduct");
             if(selectedProduct instanceof Clothing){
-                System.out.println("SetCurrentProduct: Clothing");
                 currentProduct = new Clothing();
-                
-                //clothing
-                
-                textFieldSize.textProperty().bindBidirectional(((Clothing)currentProduct).sizeProperty());
-                textFieldColor.textProperty().bindBidirectional(((Clothing)currentProduct).colorProperty());
-                System.out.println("Size=>"+((Clothing)selectedProduct).getSize());
-                
                 ((Clothing)currentProduct).setSize(((Clothing)selectedProduct).getSize());
                 ((Clothing)currentProduct).setColor(((Clothing)selectedProduct).getColor());
-                System.out.println("SetCurrentProduct: Clothing END");
             }else if(selectedProduct instanceof Accessories){
-                System.out.println("SetCurrentProduct: Accessories");
                 currentProduct = new Accessories();
-                //accessory
-                textFieldType.textProperty().bindBidirectional(((Accessories)currentProduct).typeProperty());
-                ((Accessories)currentProduct).setType(((Accessories)selectedProduct).getType());    
-                System.out.println("SetCurrentProduct: Accesories END");
             }
-            
             currentProduct.setProductCode(selectedProduct.getProductCode());
             currentProduct.setProductName(selectedProduct.getProductName());
             currentProduct.setCategory(selectedProduct.getCategory());
             currentProduct.setInventoryCount(selectedProduct.getInventoryCount());
             currentProduct.setPricePerUnit(selectedProduct.getPricePerUnit());
-            System.out.println("SetCurrentProduct: If no null END");
+
+            buttonAdd.setText("Update");
+            setAllFields(currentProduct);
         } else {
-            System.out.println("SetCurrentProduct: If null");
-            //default is selected as Clothing
-            currentProduct= new Clothing();
-            currentProduct.setProductCode(null);
-            currentProduct.setProductName("");
-            currentProduct.setCategory("");
-            currentProduct.setInventoryCount(0);
-            currentProduct.setPricePerUnit(0.0);
-            ((Clothing)currentProduct).setSize("");
-            ((Clothing)currentProduct).setColor("");
-            currentProduct= new Accessories();
-            ((Accessories)currentProduct).setType("");
-
+            if(currentProduct instanceof Clothing){
+                currentProduct= new Clothing();
+                currentProduct.setProductCode(null);
+                currentProduct.setProductName("");
+                currentProduct.setCategory("");
+                currentProduct.setInventoryCount(0);
+                currentProduct.setPricePerUnit(0.0);
+                ((Clothing)currentProduct).setSize("");
+                ((Clothing)currentProduct).setColor("");
+            } else if (currentProduct instanceof Accessories){
+                currentProduct= new Accessories();
+                currentProduct.setProductCode(null);
+                currentProduct.setProductName("");
+                currentProduct.setCategory("");
+                currentProduct.setInventoryCount(0);
+                currentProduct.setPricePerUnit(0.0);
+            }
+            buttonAdd.setText("Add");
+            clearAllFields();
         }
+    }
 
-        textViewProductName.textProperty().bindBidirectional(currentProduct.productNameProperty());
-        comboboxCategory.valueProperty().bindBidirectional(currentProduct.categoryProperty());
-        textFieldPrice.textProperty().bindBidirectional(currentProduct.pricePerUnitProperty(), new DoubleStringConverter());
-        spinnerQuantity.getValueFactory().valueProperty().bindBidirectional(currentProduct.inventoryCountProperty());
-            
+    void clearAllFields(){
+        textViewProductName.setText("");
+        textFieldCategory.setText("");
+        textFieldColor.setText("");
+        textFieldSize.setText("");
+        textFieldPrice.setText("");
+        spinnerQuantity.getValueFactory().setValue(1);
+    }
+
+    void setAllFields(Product p){
+        if(p instanceof Clothing){
+            textFieldColor.setText(((Clothing)p).getColor());
+            textFieldSize.setText(((Clothing)p).getSize());
+        }
+        textViewProductName.setText(p.getProductName());
+        comboboxProductType.getSelectionModel().select(p.getProductType());
+        textFieldCategory.setText(p.getCategory());
+        textFieldPrice.setText(p.getPricePerUnit().toString());
+        spinnerQuantity.getValueFactory().setValue(p.getInventoryCount());
+    }
+
+    Product getAllFields(Product p){
+        if(p instanceof Clothing){
+            ((Clothing)p).setColor(textFieldColor.getText());
+            ((Clothing)p).setSize(textFieldSize.getText());
+        }
+        p.setProductName(textViewProductName.getText());
+        p.setProductType(comboboxProductType.getValue());
+        p.setCategory(textFieldCategory.getText());
+        p.setPricePerUnit(Double.parseDouble(textFieldPrice.getText()));
+        p.setInventoryCount(spinnerQuantity.getValue());
+        return p;
     }
 
     

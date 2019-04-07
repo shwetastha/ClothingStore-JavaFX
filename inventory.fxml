@@ -6,88 +6,97 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="800.0" vgap="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
   <columnConstraints>
       <ColumnConstraints maxWidth="195.0" minWidth="0.0" prefWidth="0.0" />
-      <ColumnConstraints maxWidth="230" minWidth="10.0" prefWidth="210.0" />
-      <ColumnConstraints maxWidth="330.0" minWidth="10.0" prefWidth="234.0" />
-      <ColumnConstraints maxWidth="165.0" minWidth="10.0" prefWidth="115.0" />
+      <ColumnConstraints maxWidth="230.0" minWidth="10.0" prefWidth="200" />
+      <ColumnConstraints maxWidth="330.0" minWidth="10.0" prefWidth="195" />
+      <ColumnConstraints maxWidth="360" minWidth="10.0" prefWidth="355" />
       <ColumnConstraints maxWidth="65.0" minWidth="0.0" prefWidth="0.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints maxHeight="323.0" minHeight="0.0" prefHeight="0.0" />
-      <RowConstraints maxHeight="333.0" minHeight="10.0" prefHeight="275.0" />
-      <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="35" />
-      <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="35" />
-      <RowConstraints maxHeight="75.0" minHeight="10.0" prefHeight="65.0" />
+      <RowConstraints maxHeight="360" minHeight="10.0" prefHeight="355" />
+      <RowConstraints maxHeight="150" minHeight="0.0" prefHeight="30" />
+      <RowConstraints maxHeight="150" minHeight="0.0" prefHeight="30" />
+      <RowConstraints maxHeight="150" minHeight="0.0" prefHeight="30" />
+      <RowConstraints maxHeight="150" minHeight="0.0" prefHeight="135" />
       <RowConstraints maxHeight="75.0" minHeight="0.0" prefHeight="0.0" />
   </rowConstraints>
    <children>
-      <TableView fx:id="tableViewInventory" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
+      <TableView fx:id="tableViewInventory" prefHeight="250.0" prefWidth="781.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <columns>
-            <TableColumn fx:id="productCode" prefWidth="50.0" text="Code" />
-            <TableColumn fx:id="productName" prefWidth="100.0" text="Name" />
+            <TableColumn fx:id="productCode" prefWidth="75.0" text="Code" />
+            <TableColumn fx:id="productName" prefWidth="150.0" text="Name" />
+            <TableColumn fx:id="productType" prefWidth="115.0" text="Product Type" />
             <TableColumn fx:id="quantity" prefWidth="65.0" text="Quantity" />
-            <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
-            <TableColumn fx:id="category" prefWidth="95.0" text="Category" />
-            <TableColumn fx:id="size" prefWidth="45.0" text="Size" />
-            <TableColumn fx:id="color" prefWidth="75.0" text="Color" />
-            <TableColumn fx:id="type" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="price" prefWidth="100.0" text="Price" />
+            <TableColumn fx:id="category" prefWidth="100.0" text="Category" />
+            <TableColumn fx:id="size" prefWidth="75.0" text="Size" />
+            <TableColumn fx:id="color" prefWidth="92.0" text="Color" />
          </columns>
       </TableView>
-      <Button fx:id="buttonAdd" alignment="CENTER" mnemonicParsing="false" onAction="#addActionClicked" prefHeight="25.0" prefWidth="88.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <Button fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" onAction="#cancelActionClicked" prefHeight="25.0" prefWidth="88.0" text="Cancel" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <HBox fx:id="hboxCategory" alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <HBox fx:id="hboxCategory" alignment="TOP_CENTER" prefHeight="38.0" prefWidth="192.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="68.0" text="Category" />
-            <ComboBox fx:id="comboboxCategory" prefHeight="25.0" prefWidth="141.0" />
+            <Label fx:id="labelProductType" prefHeight="17.0" prefWidth="76.0" text="Product Type" />
+            <ComboBox fx:id="comboboxProductType" prefHeight="25.0" prefWidth="120.0" />
          </children>
       </HBox>
-      <HBox fx:id="hboxName" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="234.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <HBox fx:id="hboxName" alignment="TOP_CENTER" prefHeight="40.0" prefWidth="234.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
             <Label fx:id="labelProductName" prefHeight="17.0" prefWidth="54.0" text="Name" />
-            <TextField fx:id="textViewProductName" prefHeight="25.0" prefWidth="166.0" />
+            <TextField fx:id="textViewProductName" prefHeight="25.0" prefWidth="120.0" />
          </children>
       </HBox>
-      <HBox fx:id="hboxPrice" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <HBox fx:id="hboxPrice" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <Label fx:id="labelPrice" prefHeight="17.0" prefWidth="72.0" text="Price" />
-            <TextField fx:id="textFieldPrice" />
+            <Label fx:id="labelPrice" prefHeight="17.0" prefWidth="61.0" text="Price" />
+            <TextField fx:id="textFieldPrice" prefHeight="25.0" prefWidth="120.0" />
          </children>
       </HBox>
-      <HBox fx:id="hboxQuantity" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+      <HBox fx:id="hboxQuantity" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <children>
             <Label fx:id="labelQuantity" prefHeight="17.0" prefWidth="53.0" text="Quantity" />
-            <Spinner fx:id="spinnerQuantity" prefHeight="25.0" prefWidth="135.0" />
+            <Spinner fx:id="spinnerQuantity" prefHeight="25.0" prefWidth="120.0" />
          </children>
       </HBox>
-      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <columnConstraints>
-            <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints minWidth="10.0" prefWidth="175.0" />
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" />
-        </rowConstraints>
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <children>
-            <Label fx:id="labelSize" text="Size" />
-            <Label fx:id="labelColor" text="Color" GridPane.rowIndex="1" />
-            <TextField fx:id="textFieldSize" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" />
-            <TextField fx:id="textFieldColor" prefHeight="25.0" prefWidth="127.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-         </children>
-      </GridPane>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
-         <children>
-            <Label fx:id="labelType" prefHeight="17.0" prefWidth="54.0" text="Type" />
-            <TextField fx:id="textFieldType" prefHeight="25.0" prefWidth="137.0" />
+            <Label fx:id="labelCategory" prefHeight="17.0" prefWidth="54.0" text="Category" />
+            <TextField fx:id="textFieldCategory" prefHeight="25.0" prefWidth="120.0" />
          </children>
       </HBox>
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <Label fx:id="labelColor" prefHeight="17.0" prefWidth="59.0" text="Color" />
+            <TextField fx:id="textFieldColor" prefHeight="25.0" prefWidth="120.0" />
+         </children>
+      </HBox>
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+            <Label fx:id="labelSize" prefHeight="17.0" prefWidth="61.0" text="Size" />
+            <TextField fx:id="textFieldSize" prefHeight="25.0" prefWidth="120.0" />
+         </children>
+      </HBox>
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="6.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+         <children>
+            <Button fx:id="buttonAdd" alignment="CENTER" mnemonicParsing="false" onAction="#addActionClicked" prefHeight="25.0" prefWidth="75.0" text="Add" />
+            <Button fx:id="buttonCancel" alignment="CENTER" mnemonicParsing="false" onAction="#cancelActionClicked" prefHeight="25.0" prefWidth="75.0" text="Reset" />
+         </children>
+      </HBox>
+      <TextArea fx:id="textAreaReport" prefHeight="113.0" prefWidth="256.0" GridPane.columnIndex="3" GridPane.rowIndex="3" GridPane.rowSpan="3" />
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <children>
+            <Button fx:id="buttonGenerateReport" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#generateReportActionClicked" text="Generate Report" />
+         </children>
+      </VBox>
    </children>
 </GridPane>
