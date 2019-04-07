@@ -1,5 +1,6 @@
-
-
+/**
+ * Accessories.java
+ * This class extends Product.*/
 public class Accessories extends Product{
 
     Accessories(){

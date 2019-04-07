@@ -15,7 +15,22 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+/**
+ * Controller Class
+ * This class controls all the elements of the inventory.fxml file.
+ * All the logic regarding adding and updating the inventory items are included here.
+ * Report generation logic is also implemented in this class.
+ *
+ * Use of Arrays:
+ * •	Summarize data in an array by your category field
+ * •	Sort an array
+ * Use of object
+ * •	Each object must be uniquely identified
+ * •	Object names must follow standard naming conventions
+ * •	Must contain a  category field
+ * File Input and Output
+ * •	File data must be summarized and displayed to the operator in an easy to read format.
+ **/
 public class Controller implements Initializable{
 
     @FXML
@@ -100,7 +115,7 @@ public class Controller implements Initializable{
         comboboxProductType.getItems().addAll(Consts.CLOTHING, Consts.ACCESSORIES);
         
         textFieldPrice.setTextFormatter(new TextFormatter<Double>(new DoubleStringConverter()));
-        spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 9999, 1, 1));
+        spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 9999, 1, 1));
 
         // Validating Price Textfield to take only Double values
         // Ref: https://stackoverflow.com/a/31043122/6013612

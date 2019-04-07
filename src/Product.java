@@ -1,8 +1,7 @@
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-
+/**
+ * Products.java
+ * This is the super class.
+ * */
 public class Product{
     private Integer productCode;
     private String productName;
@@ -76,17 +75,6 @@ public class Product{
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    //methods
-    void addInventory(int quantity){
-        int count = getInventoryCount() + quantity;
-        this.inventoryCount=(count);
-    }
-
-    void removeInventory(int quantity){
-        int count = getInventoryCount() - quantity;
-        this.inventoryCount=(count);
     }
 
     public String toCSV () {
