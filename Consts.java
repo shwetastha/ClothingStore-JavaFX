@@ -1,3 +1,7 @@
+/**
+ * Consts.java
+ * This is a final class that holds all the constants that are being used throughout the project.
+ * */
 public final class Consts{
     public static final String CLOTHING ="Clothing";
     public static final String ACCESSORIES ="Accessories";

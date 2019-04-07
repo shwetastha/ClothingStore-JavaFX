@@ -1,3 +1,8 @@
+/**
+ * LogUtil.java
+ * This class is used for logging and debugging purposes.
+ * When variabl DEBUG is set to false all the printLogs will be disabled.
+ **/
 public class LogUtil{
     private static final boolean DEBUG = true;
     private static final String LOG = "[LOGGING] :";

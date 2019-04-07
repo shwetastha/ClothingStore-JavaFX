@@ -8,6 +8,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Home.java
+ * This contains the main function of the application.
+ * The scene and window is created here which then pulls all the elements fromt he inventory.fxml file.
+ *
+ * File Input and Output
+ * •	Each ‘transaction’ must be uniquely identified
+ * •	File must be easily read outside of your application
+ * •	Application must read and write to the file.
+ * */
 public class Home extends Application {
     Controller controller;
 
@@ -23,13 +33,16 @@ public class Home extends Application {
 
         primaryStage.setTitle("Clothing Store Inventory Management");
         primaryStage.setScene(scene);
-//        primaryStage.setResizable(false);
+        primaryStage.setResizable(false);
         controller.setProductsMap(readProductsInventory());
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(this::onClose);
     }
 
+    /**
+     * Reads the productsInventory.csv file.
+     * @returns HashMap with the list of all the Products.*/
     private HashMap<Integer, Product> readProductsInventory(){
         BufferedReader fi =null;
         HashMap<Integer, Product> productsMap = new HashMap<>();
@@ -65,6 +78,10 @@ public class Home extends Application {
 
     }
 
+    /**
+     * Writes to the productsInventory.csv file.
+     * Is associated with the closing of the window.
+     **/
     private void onClose(WindowEvent event) {
         BufferedWriter fo = null;
 
