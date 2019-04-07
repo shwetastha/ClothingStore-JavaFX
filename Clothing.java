@@ -1,6 +1,3 @@
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 public class Clothing extends Product{
     private String size;
     private String color;

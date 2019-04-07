@@ -1,8 +1,3 @@
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 public class Product{
     private Integer productCode;
     private String productName;
