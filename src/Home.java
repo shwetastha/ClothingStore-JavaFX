@@ -18,7 +18,7 @@ public class Home extends Application {
 
         Parent root = loader.load();
         controller = loader.getController();
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 800, 650);
 
 
         primaryStage.setTitle("Clothing Store Inventory Management");

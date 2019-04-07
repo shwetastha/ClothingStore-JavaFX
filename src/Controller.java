@@ -73,9 +73,6 @@ public class Controller implements Initializable{
     private TextField textFieldCategory;
 
     @FXML
-    private Button buttonGenerateReport;
-
-    @FXML
     private TextArea textAreaReport;
 
 
@@ -215,7 +212,6 @@ public class Controller implements Initializable{
     @FXML
     private void generateReportActionClicked(ActionEvent event){
         String report="";
-        report +="Low in Stock!";
 
 
         String[] categoryArray= new String[10];
@@ -223,21 +219,27 @@ public class Controller implements Initializable{
         int[] categoryCountInventory=new int[10];
         boolean exists;
         int countCat=0;
+
         for (int i =0;i<products.size();i++) {
             exists=false;
             String cat=products.get(i).getCategory();
+            /**Counting the productTypes in the inventory based on the object type.**/
             if (products.get(i) instanceof Clothing)
                 productTypeArray[0]+=products.get(i).getInventoryCount();
             else if (products.get(i) instanceof Accessories)
                 productTypeArray[1]+=products.get(i).getInventoryCount();
 
-            if(products.get(i).getInventoryCount()<3){
+            /**Displaying the list of items that are low in stock, inventory count is less than 3.**/
+            if(products.get(i).getInventoryCount()<4){
+                report +="Low in Stock!";
+
                 report+="\n\tProduct Code: "+products.get(i).getProductCode()
                         +"\n\tProduct Name: "+products.get(i).getProductName()
                         +"\n\tIn Stock: "+products.get(i).getInventoryCount();
-                report += "\n\t****************";
+                report += "\n\t****************\n";
             }
 
+            /**Counting based on the category.**/
             for(int j=0; j<categoryArray.length;j++){
                 if(categoryArray[j]!=null && cat.equalsIgnoreCase(categoryArray[j])){
                     exists=true;
@@ -252,13 +254,7 @@ public class Controller implements Initializable{
             }
         }
 
-
-        report += "\n------------------------------------------------\n";
-        report += "ProductType: Clothing \t In Stock: "+productTypeArray[0]+"\n";
-        report += "ProductType: Accessories \t In Stock: "+productTypeArray[1]+"\n";
-        report += "------------------------------------------------\n";
         /**Sorting the categoryArray List*/
-
         for (int i = 0; i <countCat; i++) {
 
             for (int j = 0; j < categoryArray.length - i - 1; j++) {
@@ -271,15 +267,20 @@ public class Controller implements Initializable{
                     categoryCountInventory[j] = categoryCountInventory[j + 1];
                     categoryCountInventory[j + 1] = tempBmi;
                 }
-
             }
         }
+        report += "------------------------------------------------\n";
 
+        /**Displaying the sorted Category and the count.**/
         for(int i=0; i<countCat;i++){
             if(categoryArray[i]!=null){
                 report= report+"Category: "+categoryArray[i]+" \t In Stock: "+categoryCountInventory[i]+"\n";
             }
         }
+
+        report += "------------------------------------------------\n";
+        report += "ProductType: Clothing \t In Stock: "+productTypeArray[0]+"\n";
+        report += "ProductType: Accessories \t In Stock: "+productTypeArray[1]+"\n";
         report += "------------------------------------------------\n";
         textAreaReport.setText(report);
 
