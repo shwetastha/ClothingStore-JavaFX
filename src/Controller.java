@@ -75,6 +75,8 @@ public class Controller implements Initializable{
     @FXML
     private TextArea textAreaReport;
 
+    DecimalFormat df=new DecimalFormat("#,###.00");
+
 
     private Product currentProduct = null;
     private final ObservableList<Product> products = FXCollections.observableArrayList();
@@ -216,7 +218,9 @@ public class Controller implements Initializable{
 
         String[] categoryArray= new String[10];
         int[] productTypeArray=new int[2];//0 clothing, 1 Accesorries
+        double[] productTypePriceArray=new double[2];
         int[] categoryCountInventory=new int[10];
+        double[] categoryPrice=new double[10];
         boolean exists;
         int countCat=0;
 
@@ -224,10 +228,13 @@ public class Controller implements Initializable{
             exists=false;
             String cat=products.get(i).getCategory();
             /**Counting the productTypes in the inventory based on the object type.**/
-            if (products.get(i) instanceof Clothing)
-                productTypeArray[0]+=products.get(i).getInventoryCount();
-            else if (products.get(i) instanceof Accessories)
-                productTypeArray[1]+=products.get(i).getInventoryCount();
+            if (products.get(i) instanceof Clothing) {
+                productTypeArray[0] += products.get(i).getInventoryCount();
+                productTypePriceArray[0] += (products.get(i).getInventoryCount()*products.get(i).getPricePerUnit());
+            }else if (products.get(i) instanceof Accessories) {
+                productTypeArray[1] += products.get(i).getInventoryCount();
+                productTypePriceArray[1] += (products.get(i).getInventoryCount()*products.get(i).getPricePerUnit());
+            }
 
             /**Displaying the list of items that are low in stock, inventory count is less than 3.**/
             if(products.get(i).getInventoryCount()<4){
@@ -244,12 +251,14 @@ public class Controller implements Initializable{
                 if(categoryArray[j]!=null && cat.equalsIgnoreCase(categoryArray[j])){
                     exists=true;
                     categoryCountInventory[j]+=products.get(i).getInventoryCount();
+                    categoryPrice[j]+=(products.get(i).getInventoryCount()*products.get(i).getPricePerUnit());
                     break;
                 }
             }
             if (!exists){
                 categoryArray[countCat]=cat;
                 categoryCountInventory[countCat]=products.get(i).getInventoryCount();
+                categoryPrice[countCat]=products.get(i).getInventoryCount()*products.get(i).getPricePerUnit();
                 countCat++;
             }
         }
@@ -274,14 +283,17 @@ public class Controller implements Initializable{
         /**Displaying the sorted Category and the count.**/
         for(int i=0; i<countCat;i++){
             if(categoryArray[i]!=null){
-                report= report+"Category: "+categoryArray[i]+" \t In Stock: "+categoryCountInventory[i]+"\n";
+                report= report+"Category: "+categoryArray[i]
+                        +"\n\t In Stock: "+categoryCountInventory[i]
+                        +"\n\t Sub Total Cost: $"+df.format(categoryPrice[i])+"\n";
             }
         }
 
         report += "------------------------------------------------\n";
-        report += "ProductType: Clothing \t In Stock: "+productTypeArray[0]+"\n";
-        report += "ProductType: Accessories \t In Stock: "+productTypeArray[1]+"\n";
+        report += "ProductType: Clothing \n\t In Stock: "+productTypeArray[0]+"\n\t Sub Total Cost: $"+df.format(productTypePriceArray[0])+"\n";
+        report += "ProductType: Accessories \n\t In Stock: "+productTypeArray[1]+"\n\t Sub Total Cost: $"+df.format(productTypePriceArray[1])+"\n";
         report += "------------------------------------------------\n";
+        report += "Total Cost: $"+df.format(productTypePriceArray[0]+productTypePriceArray[1])+"\n";
         textAreaReport.setText(report);
 
     }
