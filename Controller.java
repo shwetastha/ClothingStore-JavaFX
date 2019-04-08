@@ -203,9 +203,10 @@ public class Controller implements Initializable{
                         spinnerQuantity.getValue(),
                         Double.parseDouble(textFieldPrice.getText()),
                         textFieldCategory.getText());
-                products.add(currentProduct);
-                productsMap.put(currentProduct.getProductCode(), currentProduct);
+                
             }
+            products.add(currentProduct);
+            productsMap.put(currentProduct.getProductCode(), currentProduct);
         }
 
         setCurrentProduct(null);
