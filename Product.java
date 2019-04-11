@@ -85,5 +85,16 @@ public class Product{
          + ",,," ;
         return str;
     }
+
+    public String toString() {
+        String str;
+        str = "\tProduct Code: "+getProductCode() + 
+        "\n\tProduct Name: " + getProductName() + 
+        "\n\tIn Stock: " + getInventoryCount() +
+        "\n\tPrice: " + getPricePerUnit() +
+        "\n\tCategory: " + getCategory() 
+        ;
+        return str;
+    }
     
 }

@@ -8,6 +8,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.ParsePosition;
@@ -33,6 +35,7 @@ import java.util.ResourceBundle;
  **/
 public class Controller implements Initializable{
 
+    /*Initialising objects from the fxml file to make use of the layouts.*/
     @FXML
     private TableView<Product> tableViewInventory;
 
@@ -97,10 +100,12 @@ public class Controller implements Initializable{
     private final ObservableList<Product> products = FXCollections.observableArrayList();
     private final HashMap<Integer, Product> productsMap = new HashMap <>();
 
+    /*Function to get the Products hashmap.*/
     public HashMap<Integer, Product> getProductsMap(){
         return this.productsMap;
     }
 
+    /*Function to set the Products hashmap.*/
     public void setProductsMap(HashMap<Integer, Product> initialProductsMap){
         products.clear();
         productsMap.clear();
@@ -109,17 +114,21 @@ public class Controller implements Initializable{
         lastCode=productsMap.keySet().stream().max(Integer::compare).get();
     }
 
+    /*initialize function that makes use of the fxml layout and makes all the components work. */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        /*Setting Report Text Area Editable as false.*/
         textAreaReport.setEditable(false);
+        /*Initialising the comboBox drop down to have the 2 options for the Products Type. */
         comboboxProductType.getItems().addAll(Consts.CLOTHING, Consts.ACCESSORIES);
         
+        /*Formating the textField for Price and Spinner for  quantity.*/
         textFieldPrice.setTextFormatter(new TextFormatter<Double>(new DoubleStringConverter()));
         spinnerQuantity.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 9999, 1, 1));
 
         // Validating Price Textfield to take only Double values
         // Ref: https://stackoverflow.com/a/31043122/6013612
-        DecimalFormat format = new DecimalFormat( "#.0" );
+        DecimalFormat format = new DecimalFormat( "#.##" );
         textFieldPrice.setTextFormatter( new TextFormatter<>(c ->
         {
             if ( c.getControlNewText().isEmpty() )
@@ -134,6 +143,8 @@ public class Controller implements Initializable{
                 return c;
         }));
         
+        /*Since Size and Color is only the attribute of Clothing Class, 
+        disabling the inut components when it is Accesories.*/
         comboboxProductType.valueProperty().addListener((ov, oldval, newval) -> {
             
             if(Consts.CLOTHING.equalsIgnoreCase(newval)){
@@ -151,16 +162,20 @@ public class Controller implements Initializable{
             }
             
         });
+
+        /*Setting the default for the dropdown to select the clothing.*/
         comboboxProductType.getSelectionModel().selectFirst();
 
+        /*Creating object depending on the producType selected.*/
         if(comboboxProductType.getValue().equalsIgnoreCase(Consts.CLOTHING)){
             currentProduct = new Clothing();
         }else if(comboboxProductType.getValue().equalsIgnoreCase(Consts.ACCESSORIES)){
             currentProduct=new Accessories();
         }
         
+        /*Setting the table view with products from the list that we got from the csv file. */
         tableViewInventory.setItems(products);
-
+        /*Linking each column to the respective attribute to get the values in the table view. */
         productCode.setCellValueFactory(new PropertyValueFactory<>("productCode"));
         productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         productType.setCellValueFactory(new PropertyValueFactory<>("productType"));
@@ -170,24 +185,34 @@ public class Controller implements Initializable{
         size.setCellValueFactory(new PropertyValueFactory<>("size"));
         color.setCellValueFactory(new PropertyValueFactory<>("color"));
 
-
-//        buttonAdd.disableProperty().bind(Bindings.greaterThan(3,currentProduct.productNameProperty().length()));
-        
+        /*When a selection on the table view is made the input components gets
+         updated with the selected objects value for updating that product. */
         tableViewInventory.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
-            
+            LogUtil.printLog("selected=> "+newVal);
             setCurrentProduct(newVal);
         });
 
 
     }
+
+    /*Variable that saves the id values so that all the new added Products have uniques identifiers. */
     Integer lastCode=0;
+
+    /*Function called when Add/Update button is clicked.*/
     @FXML
     private void addActionClicked(ActionEvent event){
+        
+        if(currentProduct != null ){
+            System.out.println("Product doe :" + currentProduct.getProductCode());
+        }
         if (currentProduct.getProductCode() != null ){
-            LogUtil.printLog("Update");
+            LogUtil.printLog("Update Item");
             getAllFields(productsMap.get(currentProduct.getProductCode()));
             tableViewInventory.refresh();
+            reportGeneration("Product Code "+currentProduct.getProductCode()+ " has been updated!\n"
+            +productsMap.get(currentProduct.getProductCode()));
         }else {
+            LogUtil.printLog("Add Item");
             if (comboboxProductType.getValue().equalsIgnoreCase(Consts.CLOTHING)) {
                 currentProduct = new Clothing(++lastCode,
                         textViewProductName.getText(),
@@ -207,11 +232,14 @@ public class Controller implements Initializable{
             }
             products.add(currentProduct);
             productsMap.put(currentProduct.getProductCode(), currentProduct);
+            reportGeneration("New Product Added with Product Code: "+lastCode+"!\n"+currentProduct);
         }
 
         setCurrentProduct(null);
+        writeToFile();
     }
 
+    /*Function when the Reset button is clicked. */
     @FXML
     private void cancelActionClicked(ActionEvent event){
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -227,10 +255,40 @@ public class Controller implements Initializable{
         }
         
     }
+
+    /*Function when Generate Report Button is clicked. */
     @FXML
     private void generateReportActionClicked(ActionEvent event){
-        String report="";
+        reportGeneration("Generate Report");
+    }
 
+    private void writeToFile(){
+        BufferedWriter fo = null;
+
+        try {
+            fo = new BufferedWriter(new FileWriter(Consts.FILENAME));
+            for (Integer i : productsMap.keySet()) {
+                fo.append(productsMap.get(i).toCSV());
+            }
+
+            fo.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtil.printError("Exception occured.");
+            LogUtil.printError(e.toString());
+            if (fo!=null){
+                try{
+                    fo.close();
+                }catch(Exception e2){
+                    LogUtil.printError("Exception occured while cloing the bufferedwriter.");
+                }
+            }
+        }
+    }
+
+    /**Report generation. */
+    private void reportGeneration(String addOrUpdate){
+        String report=addOrUpdate +"\n------------------------------------------------\n";
 
         String[] categoryArray= new String[10];
         int[] productTypeArray=new int[2];//0 clothing, 1 Accesorries
@@ -277,6 +335,7 @@ public class Controller implements Initializable{
                 categoryPrice[countCat]=products.get(i).getInventoryCount()*products.get(i).getPricePerUnit();
                 countCat++;
             }
+            
         }
 
         /**Sorting the categoryArray List*/
@@ -288,9 +347,14 @@ public class Controller implements Initializable{
                     categoryArray[j] = categoryArray[j + 1];
                     categoryArray[j + 1] = temp;
 
-                    int tempBmi = categoryCountInventory[j];
+                    int tempCount = categoryCountInventory[j];
                     categoryCountInventory[j] = categoryCountInventory[j + 1];
-                    categoryCountInventory[j + 1] = tempBmi;
+                    categoryCountInventory[j + 1] = tempCount;
+
+                    double tempSubTotal = categoryPrice[j];
+                    categoryPrice[j] = categoryPrice[j + 1];
+                    categoryPrice[j + 1] = tempSubTotal;
+
                 }
             }
         }
@@ -314,9 +378,11 @@ public class Controller implements Initializable{
 
     }
 
+    /**To set the currentProduct variable and the input componenets. */
     private void setCurrentProduct(Product selectedProduct) {
         if (selectedProduct!=null){
             System.out.println("SetCurrentProduct");
+            setAllFields(selectedProduct);
             if(selectedProduct instanceof Clothing){
                 currentProduct = new Clothing();
                 ((Clothing)currentProduct).setSize(((Clothing)selectedProduct).getSize());
@@ -329,9 +395,8 @@ public class Controller implements Initializable{
             currentProduct.setCategory(selectedProduct.getCategory());
             currentProduct.setInventoryCount(selectedProduct.getInventoryCount());
             currentProduct.setPricePerUnit(selectedProduct.getPricePerUnit());
-
+            
             buttonAdd.setText("Update");
-            setAllFields(currentProduct);
         } else {
             if(currentProduct instanceof Clothing){
                 currentProduct= new Clothing();
@@ -370,7 +435,7 @@ public class Controller implements Initializable{
             textFieldSize.setText(((Clothing)p).getSize());
         }
         textViewProductName.setText(p.getProductName());
-        comboboxProductType.getSelectionModel().select(p.getProductType());
+        comboboxProductType.setValue(p.getProductType());
         textFieldCategory.setText(p.getCategory());
         textFieldPrice.setText(p.getPricePerUnit().toString());
         spinnerQuantity.getValueFactory().setValue(p.getInventoryCount());

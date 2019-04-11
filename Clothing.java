@@ -57,4 +57,16 @@ public class Clothing extends Product{
         return str;
     }
     
+    public String toString() {
+        String str;
+        str = "\tProduct Code: "+getProductCode() + 
+        "\n\tProduct Name: " + getProductName() + 
+        "\n\tIn Stock: " + getInventoryCount() +
+        "\n\tPrice: " + getPricePerUnit() +
+        "\n\tCategory: " + getCategory() +
+        "\n\tSize: " + getSize() +
+        "\n\tColor: " + getColor() 
+        ;
+        return str;
+    }
 }

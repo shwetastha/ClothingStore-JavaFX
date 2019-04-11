@@ -37,7 +37,7 @@ public class Home extends Application {
         controller.setProductsMap(readProductsInventory());
         primaryStage.show();
 
-        primaryStage.setOnCloseRequest(this::onClose);
+        primaryStage.setOnCloseRequest(event -> {this.onClose(event);});
     }
 
     /**
