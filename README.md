@@ -45,7 +45,7 @@ Instructions to run the program:
 
 Alternatively, rename the <strong>run.txt</strong> file to run.bat. And then run the command <strong>./run.bat</strong>.
 
-<h3>Classes</h3>
+<h4>Classes</h4>
 The detail and purpose of each class is as follows:
 <ol>
     <li>Products.java : Superclass</li>
