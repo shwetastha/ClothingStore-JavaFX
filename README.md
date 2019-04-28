@@ -5,6 +5,9 @@ This project is for the submission of the final assignment of JAV745.
 This application is a small demo that works as an inventory system for a Clothing Store to keep track
 of the Products.
 
+<h3>Screenshot</h3>
+<img src="Screenshot_Main.png"/>
+
 <h4>Assumptions</h4>
 While building this applicaiton following assumptions were made:
 <ol>
