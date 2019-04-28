@@ -1,6 +1,7 @@
-<h1>Name: Shweta Shrestha<h1>
+<h1>Name: Shweta Shrestha</h1>
 Seneca Id: 140687187
 
+<h1> Clothing Store Inventory System </h1>
 This project is for the submission of the final assignment of JAV745. 
 
 This application is a small demo that works as an inventory system for a Clothing Store to keep track
