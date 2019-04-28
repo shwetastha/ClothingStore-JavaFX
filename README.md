@@ -1,16 +1,16 @@
-<h1>Name: Shweta Shrestha</h1>
-Seneca Id: 140687187
-
 <h1> Clothing Store Inventory System </h1>
-This project is for the submission of the final assignment of JAV745. 
+<h3>Author: Shweta Shrestha</h3>
 
+This project is for the submission of the final assignment of JAV745. 
 This application is a small demo that works as an inventory system for a Clothing Store to keep track
 of the Products.
 
+<h4>Assumptions</h4>
 While building this applicaiton following assumptions were made:
 1. The store deals with two product types: Clothing and Accessories.
 2. The application is used to add or modify items in the inventory.
 
+<h4>Features</h4>
 This application has the following features:
 1. The application reads and writes from the csv file productsInventory.csv.
 2. The user can add a new product by filling up the form with the details and then pressing the add button.
@@ -19,6 +19,7 @@ and then modifying any values in the form. Pressing the Update button(same as th
 4. While the user adds and updates the product new report will be generated in the text area under the Generate Report button.
 5. The Generate Report button will also generate report of the current products.
 
+<h4>Instructions</h4>
 Instructions to run the program:
 Compile all the classes with the following commands:
 javac Products.java
@@ -31,8 +32,9 @@ javac Home.java
 Then run the program using the following command:
 java Home
 
-Alternatively, rename the run.txt file to run.bat. And then run the command ./run.bat.
+Alternatively, rename the <strong>run.txt</strong> file to run.bat. And then run the command <strong>./run.bat</strong>.
 
+<h3>Classes</h3>
 The detail and purpose of each class is as follows:
 Java Classes:
 Products.java : Superclass
