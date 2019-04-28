@@ -15,9 +15,9 @@ import javafx.stage.WindowEvent;
  * The scene and window is created here which then pulls all the elements fromt he inventory.fxml file.
  *
  * File Input and Output
- * •	Each ‘transaction’ must be uniquely identified
- * •	File must be easily read outside of your application
- * •	Application must read and write to the file.
+ * â€¢	Each â€˜transactionâ€™ must be uniquely identified
+ * â€¢	File must be easily read outside of your application
+ * â€¢	Application must read and write to the file.
  * */
 public class Home extends Application {
     Controller controller;

@@ -25,14 +25,14 @@ import java.util.ResourceBundle;
  * Report generation logic is also implemented in this class.
  *
  * Use of Arrays:
- * •	Summarize data in an array by your category field
- * •	Sort an array
+ * â€¢	Summarize data in an array by your category field
+ * â€¢	Sort an array
  * Use of object
- * •	Each object must be uniquely identified
- * •	Object names must follow standard naming conventions
- * •	Must contain a  category field
+ * â€¢	Each object must be uniquely identified
+ * â€¢	Object names must follow standard naming conventions
+ * â€¢	Must contain a  category field
  * File Input and Output
- * •	File data must be summarized and displayed to the operator in an easy to read format.
+ * â€¢	File data must be summarized and displayed to the operator in an easy to read format.
  **/
 public class Controller implements Initializable{
 

@@ -1,3 +1,6 @@
+Name: Shweta Shrestha
+Seneca Id: 140687187
+
 This project is for the submission of the final assignment of JAV745. 
 
 This application is a small demo that works as an inventory system for a Clothing Store to keep track
@@ -26,6 +29,8 @@ javac Controller.java
 javac Home.java
 Then run the program using the following command:
 java Home
+
+Alternatively, rename the run.txt file to run.bat. And then run the command ./run.bat.
 
 The detail and purpose of each class is as follows:
 Java Classes:
